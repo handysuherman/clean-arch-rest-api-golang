@@ -15,6 +15,11 @@ type Metrics struct {
 	FindConsumerHTTPRequest     prometheus.Counter
 	FindByIDConsumerHTTPRequest prometheus.Counter
 
+	CreateConsumerLoanLimitHTTPRequest   prometheus.Counter
+	UpdateConsumerLoanLimitHTTPRequest   prometheus.Counter
+	FindConsumerLoanLimitHTTPRequest     prometheus.Counter
+	FindByIDConsumerLoanLimitHTTPRequest prometheus.Counter
+
 	CreateAffiliatedDealerHTTPRequest   prometheus.Counter
 	UpdateAffiliatedDealerHTTPRequest   prometheus.Counter
 	FindAffiliatedDealerHTTPRequest     prometheus.Counter
@@ -30,6 +35,11 @@ func New(cfg *config.App) *Metrics {
 		UpdateConsumerHTTPRequest:   NewCounter(cfg, "update_consumer", constants.HTTP),
 		FindConsumerHTTPRequest:     NewCounter(cfg, "find_consumer", constants.HTTP),
 		FindByIDConsumerHTTPRequest: NewCounter(cfg, "find_by_id_consumer", constants.HTTP),
+
+		CreateConsumerLoanLimitHTTPRequest:   NewCounter(cfg, "create_consumer_loan_limit", constants.HTTP),
+		UpdateConsumerLoanLimitHTTPRequest:   NewCounter(cfg, "update_consumer_loan_limit", constants.HTTP),
+		FindConsumerLoanLimitHTTPRequest:     NewCounter(cfg, "find_consumer_loan_limit", constants.HTTP),
+		FindByIDConsumerLoanLimitHTTPRequest: NewCounter(cfg, "find_by_id_consumer_loan_limit", constants.HTTP),
 
 		CreateAffiliatedDealerHTTPRequest:   NewCounter(cfg, "create_affiliated_dealer", constants.HTTP),
 		UpdateAffiliatedDealerHTTPRequest:   NewCounter(cfg, "update_affiliated_dealer", constants.HTTP),

@@ -8,6 +8,10 @@ import (
 	consumersHandler "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumers/delivery/http/v1"
 	// consumersRepo "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumers/repository"
 	consumersUsecase "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumers/usecases"
+
+	consumerLoanLimitsHandler "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_loan_limits/delivery/http/v1"
+	// consumer_loan_limitsRepo "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_loan_limits/repository"
+	consumerLoanLimitsUsecase "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_loan_limits/usecases"
 )
 
 func (a *app) affiliatedDealersHandlers() *affiliatedDealersHandler.Handler {
@@ -22,6 +26,14 @@ func (a *app) consumersHandlers() *consumersHandler.Handler {
 	// repo := consumersRepo.New(a.log, a.cfg)
 	usecase := consumersUsecase.New()
 	handler := consumersHandler.New(a.log, a.cfg, usecase, a.server, a.metrics)
+
+	return handler
+}
+
+func (a *app) consumerLoanLimitsHandlers() *consumerLoanLimitsHandler.Handler {
+	// repo := consumerLoanLimitsRepo.New(a.log, a.cfg)
+	usecase := consumerLoanLimitsUsecase.New()
+	handler := consumerLoanLimitsHandler.New(a.log, a.cfg, usecase, a.server, a.metrics)
 
 	return handler
 }
