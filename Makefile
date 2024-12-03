@@ -1,3 +1,7 @@
+.PHONY: server
+server:
+	go run ./cmd/main.go --config-file=. --env=develop
+
 # just incase you got error like this: tls: failed to verify certificate: x509: certificate is valid for *.myrepublic.co.id, not storage.googleapis.com
 # run below make file command GOPROXY=direct go mod tidy or GOPROXY=direct go get your-go-dependency-url
 .PHONY: go-direct
