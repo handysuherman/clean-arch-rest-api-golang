@@ -65,4 +65,5 @@ func (a *app) bootstrapHandlers(ctx context.Context, cancel context.CancelFunc) 
 	a.affiliatedDealersHandlers().MapRoutes()
 	a.consumersHandlers().MapRoutes()
 	a.consumerLoanLimitsHandlers().MapRoutes()
+	a.consumerTransactionsHandlers().MapRoutes()
 }
