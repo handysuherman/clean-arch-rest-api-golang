@@ -62,5 +62,6 @@ func (a *app) runHTTPServer(ctx context.Context, cancel context.CancelFunc) erro
 }
 
 func (a *app) bootstrapHandlers(ctx context.Context, cancel context.CancelFunc) {
-	a.dropboxHandlers().MapRoutes()
+	a.affiliatedDealersHandlers().MapRoutes()
+	a.consumersHandlers().MapRoutes()
 }
