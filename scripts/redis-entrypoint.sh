@@ -15,4 +15,4 @@ redis-server --tls-port 6379 --port 0 \
     --list-max-ziplist-size -2 \
     --activerehashing yes \
     --appendfsync everysec \
-    --requirepass 611fbff225e20a58d45641394482f26a
+    --requirepass mock_redis_password
