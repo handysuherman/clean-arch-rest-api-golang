@@ -1,3 +1,9 @@
+# just incase you got error like this: tls: failed to verify certificate: x509: certificate is valid for *.myrepublic.co.id, not storage.googleapis.com
+# run below make file command GOPROXY=direct go mod tidy or GOPROXY=direct go get your-go-dependency-url
+.PHONY: go-direct
+go-direct:
+	GOPROXY=direct go mod tidy
+
 .PHONY: certs-clean
 certs-clean:
 	@find tls/ -type f -not \( -name 'client.cnf' -o -name 'server.cnf' -o -name 'ca.cnf' \) -exec rm -f {} +
