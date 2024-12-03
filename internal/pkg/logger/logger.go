@@ -26,23 +26,7 @@ type Logger interface {
 	Warn(args ...interface{})
 	Error(args ...interface{})
 	Fatal(args ...interface{})
-	KafkaProcessMessage(
-		topic string,
-		partition int,
-		message string,
-		workerID int,
-		offset int64,
-		time time.Time,
-	)
 	HttpMiddlewareAccessLogger(method, uri string, status int, size int64, time time.Duration)
-	KafkaLogCommitedMessage(topic string, partition int, offset int64)
-	GrpcClientInterceptorLogger(
-		method string,
-		req, reply interface{},
-		time time.Duration,
-		metaData map[string][]string,
-		err error,
-	)
 }
 
 type appLogger struct {
