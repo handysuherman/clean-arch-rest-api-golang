@@ -1,0 +1,95 @@
+services:
+  internal:
+    id: 2f47cd0f77936e409ff6d3ca49a5af0828cbb3f6
+    name: be_77936e409ff6d3ca49a5af0828cbb3f6
+    dns: be_77936e409ff6d3ca49a5af0828cbb3f6.server
+    log_level: debug
+    environment: develop
+    enable_tls: false
+    operation_timeout: 15s
+    x_api_key: 8feebf5449a66e3b7f7da7be3a71421c3fac62078227dbf9c66a850237b19191
+    addr: "0.0.0.0"
+    port: 50050
+databases:
+  mysql:
+    driver: "mysql"
+    source: "constantinopel.xyz-multifinance-mysql.server"
+    username: "mock_user"
+    password: "mock_password"
+    db_name: "mock_db"
+    host: "constantinopel.xyz-multifinance-mysql.server"
+    port: "3306"
+    enable_tls: true
+    migration_url: "./configs/migrations"
+  redis:
+    servers:
+      - "constantinopel.xyz-multifinance-redis.server:6379"
+    db: 0
+    password: mock_redis_password
+    pool_size: 300
+    app_id: 2f47cd0f77936e409ff6d3ca49a5af0828cbb3f6
+    enable_tls: true
+    prefixes:
+      create_consumer_idempotency:
+        prefix: create_consumer_idempotency
+        expirationDuration: 1m
+      update_consumer_idempotency:
+        prefix: update_consumer_idempotency
+        expirationDuration: 1m
+      consumer:
+        prefix: consumer
+        expirationDuration: 15s
+      create_consumer_loan_limit_idempotency:
+        prefix: create_consumer_loan_limit_idempotency
+        expirationDuration: 1m
+      update_consumer_loan_limit_idempotency:
+        prefix: update_consumer_loan_limit_idempotency
+        expirationDuration: 1m
+      consumer_loan_limit:
+        prefix: consumer_loan_limit
+        expirationDuration: 30s
+      create_consumer_transaction_idempotency:
+        prefix: create_consumer_transaction_idempotency
+        expirationDuration: 1m
+      update_consumer_transaction_idempotency:
+        prefix: update_consumer_transaction_idempotency
+        expirationDuration: 1m
+      consumer_transaction:
+        prefix: consumer_transaction
+        expirationDuration: 5s
+      create_affiliated_dealer_idempotency:
+        prefix: create_affiliated_dealer_idempotency
+        expirationDuration: 1m
+      update_affiliated_dealer_idempotency:
+        prefix: update_affiliated_dealer_idempotency
+        expirationDuration: 1m
+      affiliated_dealer:
+        prefix: affiliated_dealer
+        expirationDuration: 30s
+monitoring:
+  probes:
+    readiness_path: /ready
+    liveness_path: /live
+    check_interval: 10
+    port: :6880
+    pprof: :7880
+    prometheus:
+      port: :8880
+      path: /metrics
+  jaeger:
+    host_port: 0.0.0.0:6831
+    enable: true
+    logSpan: true
+tls:
+  app:
+    ca_path: "./tls/mysql/ca-cert.pem"
+    cert_path: "./tls/mysql/server-cert.pem"
+    key_path: "./tls/mysql/server-key.pem"
+  mysql:
+    ca_path: "./tls/mysql/ca-cert.pem"
+    cert_path: "./tls/mysql/client-cert.pem"
+    key_path: "./tls/mysql/client-key.pem"
+  redis:
+    ca_path: "./tls/redis/ca-cert.pem"
+    cert_path: "./tls/redis/client-cert.pem"
+    key_path: "./tls/redis/client-key.pem"

@@ -1,6 +1,45 @@
+MIGRATION_PATH=${shell pwd}/configs/migration
+CERT_DIR=./tls
+DN_NAME=mock_db
+DB_TLS_CA_PATH=$(shell pwd)/tls/mysql/ca-cert.pem
+DB_TLS_CLIENT_CERT_PATH=$(shell pwd)/tls/mysql/client-cert.pem
+DB_TLS_CLIENT_KEY_PATH=$(shell pwd)/tls/mysql/client-key.pem
+DB_USER=mock_user
+DB_PASSWORD=mock_password
+DB_HOST=0.0.0.0
+DB_PORT=3306
+# for dev environment
+DB_URL=mysql://${DB_USER}:${DB_PASSWORD}@tcp(${DB_HOST}:${DB_PORT})/${DN_NAME}?multiStatements=true
+
+.PHONY: create-migration-file
+create-migration-file:
+	migrate create -ext sql -dir ${MIGRATION_PATH}/ -seq ${MIGRATE_NAME}
+
+.PHONY: sqlc
+sqlc:
+	sqlc generate
+
+.PHONY: migrateup
+migrateup:
+	migrate -path ${MIGRATION_PATH} -database "$(DB_URL)" -verbose up
+
+.PHONY: migratedown
+migratedown:
+	migrate -path ${MIGRATION_PATH} -database "$(DB_URL)" -verbose down -all
+
 .PHONY: server
 server:
-	go run ./cmd/main.go --config-file=. --env=develop
+	go run ./cmd/main.go --config-file=. --env=production
+
+.PHONY: dev-server-clean
+dev-server-clean:
+	docker compose -f dev.docker-compose.yml down
+
+.PHONY: dev-server
+dev-server:
+	docker compose -f dev.docker-compose.yml up -d
+	sleep 3
+	go run ./cmd/main.go --config-file=./config-dev.yaml --env=develop
 
 # just incase you got error like this: tls: failed to verify certificate: x509: certificate is valid for *.myrepublic.co.id, not storage.googleapis.com
 # run below make file command GOPROXY=direct go mod tidy or GOPROXY=direct go get your-go-dependency-url
