@@ -21,7 +21,7 @@ type AffiliatedDealerList struct {
 }
 
 type CreateDTORequestParams struct {
-	AffiliatedDealerName string `json:"affiliated_dealer_name" validate:"required,gte=0,lte=16"`
+	AffiliatedDealerName string `json:"affiliated_dealer_name" validate:"required,gte=0,lte=255"`
 }
 
 type UpdateDTORequestParams struct {

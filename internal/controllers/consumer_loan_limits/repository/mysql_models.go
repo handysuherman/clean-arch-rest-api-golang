@@ -39,3 +39,15 @@ type Consumer struct {
 	// format should be like 0001-01-01 00:00:00Z
 	IsActivatedUpdatedAt string `json:"is_activated_updated_at"`
 }
+
+type ConsumerLoanLimit struct {
+	ID         int64           `json:"id"`
+	ConsumerID int64           `json:"consumer_id"`
+	Tenor      int16           `json:"tenor"`
+	Amount     decimal.Decimal `json:"amount"`
+	// format should be like 0001-01-01 00:00:00Z
+	CreatedAt string `json:"created_at"`
+	// format should be like 0001-01-01 00:00:00Z
+	UpdatedAt string         `json:"updated_at"`
+	UpdatedBy sql.NullString `json:"updated_by"`
+}
