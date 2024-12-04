@@ -18,12 +18,6 @@ services:
     volumes:
       - ./tls/redis:/tls/ssl
       - ./deployment-scripts/redis/redis-entrypoint.sh:/app/docker-entrypoint.sh
-      - ./deployment-scripts/redis/redis-healthcheck.sh:/app/docker-healthcheck.sh
-    healthcheck:
-      test: ["CMD", /app/docker-healthcheck.sh]
-      interval: 10s
-      timeout: 10s
-      retries: 5
   
   # monitoring
   prometheus:

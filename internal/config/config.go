@@ -13,8 +13,8 @@ func New(path string) (*Config, error) {
 	ext := filepath.Ext(fileName)
 
 	viper.SetConfigName(strings.TrimSuffix(fileName, ext))
-	viper.SetConfigType(ext)
-	viper.AddConfigPath(path)
+	viper.SetConfigType(strings.TrimPrefix(ext, "."))
+	viper.AddConfigPath(filepath.Dir(fileName))
 
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("viper.ReadInConfig.err: %v", err)

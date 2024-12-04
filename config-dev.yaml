@@ -13,17 +13,17 @@ services:
 databases:
   mysql:
     driver: "mysql"
-    source: "localhost"
+    source: "0.0.0.0"
     username: "mock_user"
     password: "mock_password"
     dbName: "mock_db"
-    host: "localhost"
+    host: "0.0.0.0"
     port: "3306"
     enable_tls: false
     migration_url: "./configs/migrations"
   redis:
     servers:
-      - "localhost"
+      - "0.0.0.0:6379"
     db: 0
     password: mock_redis_password
     pool_size: 300

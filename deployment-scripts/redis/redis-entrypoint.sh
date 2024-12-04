@@ -1,10 +1,7 @@
 #!/bin/sh
 set -e
 
-redis-server --tls-port 6379 --port 0 \
-    --tls-auth-clients yes \
-    --tls-session-caching no \
-    --tls-protocols "TLSv1.2 TLSv1.3" \
+redis-server --port 6379 \
     --loglevel notice \
     --slowlog-max-len 128 \
     --latency-monitor-threshold 0 \
