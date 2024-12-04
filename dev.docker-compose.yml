@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mysql:
+    build:
+      context: .
+      dockerfile: build/docker/Dockerfile.mysql
+    environment:
+      MYSQL_DATABASE: mock_db
+      MYSQL_USER: mock_user
+      MYSQL_PASSWORD: mock_password
+      MYSQL_ROOT_PASSWORD: mock_root_password
+    ports:
+      - "3306:3306"
+  redis:
+    image: redis:7.2.2-alpine
+    command: ["/app/docker-entrypoint.sh"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./tls/redis:/tls/ssl
+      - ./deployment-scripts/redis/redis-entrypoint.sh:/app/docker-entrypoint.sh
+      - ./deployment-scripts/redis/redis-healthcheck.sh:/app/docker-healthcheck.sh
+    healthcheck:
+      test: ["CMD", /app/docker-healthcheck.sh]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+  
+  # monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./configs/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+   
+  node_exporter:
+    image: prom/node-exporter
+    ports:
+      - '9100:9100'
+   
+  grafana:
+    image: grafana/grafana
+    ports:
+      - '3000:3000'
+      
+  jaeger:
+    image: jaegertracing/all-in-one:1.35
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    ports:
+      - "6381:6831/udp"
+      - "16686:16686"
