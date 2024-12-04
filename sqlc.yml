@@ -2,7 +2,7 @@ version: "2"
 sql:
   - engine: "mysql"
     schema:
-      - "./configs/migration/"
+      - "./configs/migration/000001_consumers.up.sql"
     queries: "./internal/controllers/consumers/repository/query/"
     gen:
       go:
@@ -27,7 +27,8 @@ sql:
             db_type: "decimal"
   - engine: "mysql"
     schema:
-      - "./configs/migration/"
+      - "./configs/migration/000001_consumers.up.sql"
+      - "./configs/migration/000003_consumer_loan_limits.up.sql"
     queries: "./internal/controllers/consumer_loan_limits/repository/query/"
     gen:
       go:
@@ -52,7 +53,7 @@ sql:
             db_type: "decimal"
   - engine: "mysql"
     schema:
-      - "./configs/migration/"
+      - "./configs/migration/000002_affiliated_dealers.up.sql"
     queries: "./internal/controllers/affiliated_dealers/repository/query/"
     gen:
       go:
