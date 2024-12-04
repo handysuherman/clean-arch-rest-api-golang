@@ -51,12 +51,48 @@ func (a *app) Run() error {
 
 	a.metrics = metrics.New(a.cfg.Services.Internal)
 
+	if err := a.mysql(ctx); err != nil {
+		return err
+	}
+	a.log.Infof("connection to database successfully established...")
+	defer a.mysqlConnection.Close()
+
+	if err := a.redis(ctx); err != nil {
+		return err
+	}
+	a.log.Infof("connection to redis successfully established...")
+	defer a.redisConnection.Close()
+
+	if err := a.jaeger(); err != nil {
+		return err
+	}
+	a.log.Infof("connection to jaeger successfully established...")
+	defer a.jaegerCloser.Close()
+
 	go func() {
 		if err := a.runHTTPServer(ctx, cancel); err != nil {
 			a.log.Debugf("a.runHealthCheck.err: %v", err)
 			cancel()
 		}
 	}()
+	a.log.Infof(
+		"APP server running on: :%v, w/ SwaggerDocs Enabled: %v, w/ TLS Enabled: %v",
+		a.cfg.Services.Internal.Port,
+		a.cfg.Services.Internal.Environment != "production",
+		a.cfg.Services.Internal.EnableTLS,
+	)
+
+	go func() {
+		if err := a.runHealthCheckServer(ctx); err != nil {
+			a.log.Errorf("a.runHealthCheck: %v", err)
+			cancel()
+		}
+	}()
+	a.log.Infof("health check server is running on: %v...", a.cfg.Monitoring.Probes.Port)
+
+	a.runMetricsServer(cancel)
+
+	a.log.Infof("metrics server is running on port: %v ...", a.cfg.Monitoring.Probes.Prometheus.Port)
 
 	a.shutdownProcess(ctx)
 

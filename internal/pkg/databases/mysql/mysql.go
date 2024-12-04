@@ -1,4 +1,4 @@
-package MariaDB
+package mysql
 
 import (
 	"crypto/tls"
@@ -28,7 +28,12 @@ const (
 	maxConnLifeTime = 3 * time.Minute
 )
 
-func NewMariaDBConn(config *Config) (*sql.DB, error) {
+func New(config *Config) (*sql.DB, error) {
+	// TLS
+	if config.TLSEnable {
+		mysql.RegisterTLSConfig("custom", config.TLS)
+	}
+
 	db, err := sql.Open(config.Driver, config.Source)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open database connection: %v", err)
@@ -57,11 +62,6 @@ func NewMariaDBConn(config *Config) (*sql.DB, error) {
 
 	if config.MaxConnectionLifeTime != nil {
 		db.SetConnMaxLifetime(*config.MaxConnectionLifeTime)
-	}
-
-	// TLS
-	if config.TLSEnable {
-		mysql.RegisterTLSConfig(config.TLStype, config.TLS)
 	}
 
 	if err := db.Ping(); err != nil {

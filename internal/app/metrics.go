@@ -16,7 +16,7 @@ const (
 	writeTimeout = 15 * time.Second
 )
 
-func (a *app) runMetrics(cancel context.CancelFunc) {
+func (a *app) runMetricsServer(cancel context.CancelFunc) {
 	a.metricsServer = echo.New()
 
 	go func() {
@@ -27,8 +27,6 @@ func (a *app) runMetrics(cancel context.CancelFunc) {
 		}))
 
 		a.metricsServer.GET(a.cfg.Monitoring.Probes.Prometheus.Path, echo.WrapHandler(promhttp.Handler()))
-
-		a.log.Infof("metrics server is running on port: %v", a.cfg.Monitoring.Probes.Prometheus.Port)
 
 		if err := a.metricsServer.Start(a.cfg.Monitoring.Probes.Prometheus.Port); err != nil {
 			a.log.Errorf("a.runMetrics.Start.err: %v", err)

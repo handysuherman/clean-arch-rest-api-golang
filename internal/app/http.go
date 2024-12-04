@@ -52,13 +52,6 @@ func (a *app) runHTTPServer(ctx context.Context, cancel context.CancelFunc) erro
 		return err
 	}
 
-	a.log.Infof(
-		"APP server running on: %v, SwaggerDocs Enabled: %v, TLS Enabled: %v",
-		addr,
-		a.cfg.Services.Internal.Environment != "production",
-		a.cfg.Services.Internal.EnableTLS,
-	)
-
 	return nil
 }
 

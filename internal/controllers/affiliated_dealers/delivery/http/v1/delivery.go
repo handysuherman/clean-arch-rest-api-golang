@@ -23,14 +23,14 @@ func New(
 	log logger.Logger,
 	cfg *config.Config,
 	usecase domain.Usecase,
-	srv *server.Hertz,
+	server *server.Hertz,
 	metrics *metrics.Metrics,
 ) *Handler {
 	return &Handler{
 		log:     log.WithPrefix(fmt.Sprintf("%s-%s", "affiliated-dealers", constants.Handler)),
 		cfg:     cfg,
 		usecase: usecase,
-		server:  srv,
+		server:  server,
 		metrics: metrics,
 	}
 }

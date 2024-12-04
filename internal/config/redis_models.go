@@ -20,7 +20,7 @@ type Redis struct {
 
 type RedisPrefixes struct {
 	CreateConsumerIdempotency *Prefixes `mapstructure:"create_consumer_idempotency"`
-	UpdateConsumerIdempotency *Prefixes `mapstructure:"create_consumer_idempotency"`
+	UpdateConsumerIdempotency *Prefixes `mapstructure:"update_consumer_idempotency"`
 	Consumer                  *Prefixes `mapstructure:"consumer"`
 
 	CreateConsumerLoanLimitIdempotency *Prefixes `mapstructure:"create_consumer_loan_limit_idempotency"`

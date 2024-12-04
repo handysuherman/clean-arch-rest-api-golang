@@ -1,0 +1,6 @@
+[mysqld]
+ssl-ca = /var/lib/mysql-files/ca-cert.pem
+ssl-cert = /var/lib/mysql-files/server-cert.pem
+ssl-key = /var/lib/mysql-files/server-key.pem
+require_secure_transport = ON
+log-error-verbosity = 3

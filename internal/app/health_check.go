@@ -10,7 +10,7 @@ import (
 	"github.com/heptiolabs/healthcheck"
 )
 
-func (a *app) runHealthCheck(ctx context.Context) error {
+func (a *app) runHealthCheckServer(ctx context.Context) error {
 	health := healthcheck.NewHandler()
 
 	mux := http.NewServeMux()

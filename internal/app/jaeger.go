@@ -21,8 +21,6 @@ func (a *app) jaeger() error {
 
 		a.jaegerCloser = closer
 		opentracing.SetGlobalTracer(tracer)
-
-		a.log.Info("successfully connected to jaeger: %v", a.cfg.Monitoring.Jaeger.HostPort)
 	}
 
 	return nil

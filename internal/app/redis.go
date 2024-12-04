@@ -2,9 +2,6 @@ package app
 
 import (
 	"context"
-	"crypto/tls"
-	"crypto/x509"
-	"os"
 
 	redisDb "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/databases/redis"
 )
@@ -19,25 +16,13 @@ func (a *app) redis(ctx context.Context) error {
 	}
 
 	if opt.TLsEnable {
-		ca_cert, err := os.ReadFile(a.cfg.TLS.Redis.CaPath)
+		tls, err := a.loadTLsCerts(a.cfg.TLS.Redis.CaPath, a.cfg.TLS.Redis.CertPath, a.cfg.TLS.Redis.KeyPath)
 		if err != nil {
-			a.log.Fatalf("redis.ca_cert.os.ReadFile.err: %v", err)
+			a.log.Warnf("redis.a.loadTLsCerts.err: %v", err)
 			return err
 		}
 
-		cert, err := tls.LoadX509KeyPair(a.cfg.TLS.Redis.CertPath, a.cfg.TLS.Redis.KeyPath)
-		if err != nil {
-			a.log.Fatalf("redis.cert.tls.LoadX509KeyPair.err: %v", err)
-			return err
-		}
-
-		cert_pool := x509.NewCertPool()
-		cert_pool.AppendCertsFromPEM(ca_cert)
-
-		opt.TLs = &tls.Config{
-			RootCAs:      cert_pool,
-			Certificates: []tls.Certificate{cert},
-		}
+		opt.TLs = tls
 	}
 
 	conn, err := redisDb.NewUniversalRedisClient(ctx, &opt)

@@ -14,6 +14,7 @@ certs-clean:
 	@echo "tls/ path successfully cleaned..."
 
 .PHONY: redis-ca
+
 redis-ca:
 	@openssl ecparam -name secp384r1 -genkey -noout -out tls/redis/ca/ca-key.pem > /dev/null 2>&1
 	@openssl req -x509 -new -key tls/redis/ca/ca-key.pem -out tls/redis/ca/ca-cert.pem -days 1100 -config tls/redis/ca/ca.cnf > /dev/null 2>&1
