@@ -2,14 +2,19 @@ package config
 
 import (
 	"fmt"
+	"path/filepath"
+	"strings"
 
 	"github.com/spf13/viper"
 )
 
 func New(path string) (*Config, error) {
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath(path)
+	fileName := filepath.Base(path)
+	ext := filepath.Ext(fileName)
+
+	viper.SetConfigName(strings.TrimSuffix(fileName, ext))
+	viper.SetConfigType(strings.TrimPrefix(ext, "."))
+	viper.AddConfigPath(filepath.Dir(path))
 
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("viper.ReadInConfig.err: %v", err)

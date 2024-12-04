@@ -1,9 +1,11 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/app"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/config"
@@ -50,10 +52,16 @@ func main() {
 }
 
 func exportedFlags() (*flags, error) {
-	appConfigFilePath := flag.String("config-file", "./config.yml", "App configuration file path")
+	appConfigFilePath := flag.String("config-file", "./config.yml", "App configuration file path expected extension should be yaml")
 	appEnvironment := flag.String("env", "develop", "App environment")
 
 	flag.Parse()
+
+	fileName := filepath.Base(*appConfigFilePath)
+
+	if filepath.Ext(fileName) != ".yaml" {
+		return nil, errors.New("configuration should be with .yaml ext")
+	}
 
 	return &flags{
 		appEnvironment: *appEnvironment,
