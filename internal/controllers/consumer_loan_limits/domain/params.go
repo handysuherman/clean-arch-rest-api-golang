@@ -3,11 +3,14 @@ package domain
 import "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
 
 type CreateRequestParams struct {
-	AffiliatedDealerName string `json:"affiliated_dealer_name" validate:"required,gte=0,lte=16"`
+	ConsumerID int64  `json:"consumer_id" validate:"required"`
+	Tenor      int16  `json:"tenor" validate:"required"`
+	Amount     string `json:"amount" validate:"required"`
 }
 
 type UpdateRequestParams struct {
-	AffiliatedDealerName *string `json:"affiliated_dealer_name,omitempty"`
+	Tenor  *int16  `json:"tenor"`
+	Amount *string `json:"amount"`
 }
 
 type FetchParams struct {
