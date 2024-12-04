@@ -53,6 +53,33 @@ sql:
             db_type: "decimal"
   - engine: "mysql"
     schema:
+      - "./configs/migration/000001_consumers.up.sql"
+      - "./configs/migration/000002_affiliated_dealers.up.sql"
+      - "./configs/migration/000004_consumer_transactions.up.sql"
+    queries: "./internal/controllers/consumer_transactions/repository/query/"
+    gen:
+      go:
+        package: "repository"
+        out: "./internal/controllers/consumer_transactions/repository"
+        sql_package: "database/sql"
+        emit_json_tags: true
+        emit_prepared_queries: false
+        emit_interface: true
+        emit_exact_table_names: false
+        emit_empty_slices: true
+        emit_result_struct_pointers: true
+        emit_params_struct_pointers: true
+        output_db_file_name: "mysql.go"
+        output_models_file_name: "mysql_models.go"
+        output_querier_file_name: "mysql_repository.go"
+        overrides:
+          - go_type: "github.com/shopspring/decimal.NullDecimal"
+            db_type: "decimal"
+            nullable: true
+          - go_type: "github.com/shopspring/decimal.Decimal"
+            db_type: "decimal"
+  - engine: "mysql"
+    schema:
       - "./configs/migration/000002_affiliated_dealers.up.sql"
     queries: "./internal/controllers/affiliated_dealers/repository/query/"
     gen:
