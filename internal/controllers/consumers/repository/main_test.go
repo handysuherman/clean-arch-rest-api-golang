@@ -65,8 +65,6 @@ func mysqlConn() {
 		),
 	}
 
-	tlog.Info(opt.Source)
-
 	conn, err := mysql.New(opt)
 	if err != nil {
 		tlog.Warnf("mysql.mysql.New.err: %v", err)

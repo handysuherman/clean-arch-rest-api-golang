@@ -17,7 +17,7 @@ func TestCreate(t *testing.T) {
 }
 
 func createRandom(t *testing.T) *Consumer {
-	birthDateStr := fmt.Sprintf("%d-%02d-%02d", helper.RandomInt(2000, 2099), helper.RandomInt(1, 12), helper.RandomInt(1, 31))
+	birthDateStr := fmt.Sprintf("%d-%02d-%02d", helper.RandomInt(2000, 2099), helper.RandomInt(1, 12), helper.RandomInt(1, 28))
 	birthDateLayoutStr := "2006-01-02"
 
 	parsedBirthDate, err := time.Parse(birthDateLayoutStr, birthDateStr)
