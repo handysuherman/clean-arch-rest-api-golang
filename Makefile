@@ -1,3 +1,20 @@
+MIGRATION_PATH=configs/migration
+.PHONY: create-migration-file
+create-migration-file:
+	migrate create -ext sql -dir ${MIGRATION_PATH}/ -seq ${MIGRATE_NAME}
+
+.PHONY: sqlc
+sqlc:
+	sqlc generate
+
+.PHONY: migrateup
+migrateup:
+	migrate -path ${MIGRATION_PATH} -database "$(DB_URL)" -verbose up
+
+.PHONY: migratedown
+migratedown:
+	migrate -path ${MIGRATION_PATH} -database "$(DB_URL)" -verbose down -all
+
 .PHONY: server
 server:
 	go run ./cmd/main.go --config-file=. --env=develop
