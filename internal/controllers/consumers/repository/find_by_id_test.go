@@ -19,7 +19,7 @@ func TestFindByID(t *testing.T) {
 	require.Equal(t, arg.LegalName, res.LegalName)
 	require.Equal(t, arg.BirthPlace, res.BirthPlace)
 	require.Equal(t, arg.BirthDate, res.BirthDate)
-	require.Equal(t, arg.Salary, res.Salary)
+	require.Equal(t, arg.Salary.Decimal.String(), res.Salary.Decimal.String())
 	require.Equal(t, arg.KtpPhoto, res.KtpPhoto)
 	require.Equal(t, arg.SelfiePhoto, res.SelfiePhoto)
 	require.Equal(t, arg.CreatedAt, res.CreatedAt)
