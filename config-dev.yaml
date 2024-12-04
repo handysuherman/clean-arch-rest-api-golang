@@ -16,7 +16,7 @@ databases:
     source: "0.0.0.0"
     username: "mock_user"
     password: "mock_password"
-    dbName: "mock_db"
+    db_name: "mock_db"
     host: "0.0.0.0"
     port: "3306"
     enable_tls: false

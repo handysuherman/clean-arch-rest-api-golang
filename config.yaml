@@ -16,7 +16,7 @@ databases:
     source: "constantinopel.xyz-multifinance-mysql.server"
     username: "mock_user"
     password: "mock_password"
-    dbName: "mock_db"
+    db_name: "mock_db"
     host: "constantinopel.xyz-multifinance-mysql.server"
     port: "3306"
     enable_tls: true
