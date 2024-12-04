@@ -2,8 +2,10 @@ package app
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -13,16 +15,21 @@ import (
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/metrics"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/logger"
 	"github.com/labstack/echo/v4"
+	"github.com/redis/go-redis/v9"
 )
 
 type app struct {
-	log           logger.Logger
-	cfg           *config.Config
-	server        *server.Hertz
-	metrics       *metrics.Metrics
-	metricsServer *echo.Echo
+	log               logger.Logger
+	cfg               *config.Config
+	server            *server.Hertz
+	metrics           *metrics.Metrics
+	metricsServer     *echo.Echo
+	healthCheckServer *http.Server
 
 	jaegerCloser io.Closer
+
+	mysqlConnection *sql.DB
+	redisConnection redis.UniversalClient
 
 	doneCh chan struct{}
 }
