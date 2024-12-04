@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"os/signal"
 	"syscall"
@@ -20,6 +21,8 @@ type app struct {
 	server        *server.Hertz
 	metrics       *metrics.Metrics
 	metricsServer *echo.Echo
+
+	jaegerCloser io.Closer
 
 	doneCh chan struct{}
 }
