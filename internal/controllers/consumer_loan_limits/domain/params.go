@@ -9,8 +9,8 @@ type CreateRequestParams struct {
 }
 
 type UpdateRequestParams struct {
-	Tenor  int16  `json:"tenor" validate:"required"`
-	Amount string `json:"amount" validate:"required"`
+	Tenor  *int16  `json:"tenor"`
+	Amount *string `json:"amount"`
 }
 
 type FetchParams struct {
