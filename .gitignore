@@ -1,3 +1,8 @@
 *.pem
 *.srl
-config.yaml
+
+# for testing/showcasing purposes. In production, this should be ignored.
+# config.yaml
+
+# for testing/showcasing purposes. In production, this should be ignored.
+# config-dev.yaml

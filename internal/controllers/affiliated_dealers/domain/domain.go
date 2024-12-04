@@ -1,3 +1,4 @@
 package domain
 
-type Usecase interface{}
+type Usecase interface {
+}

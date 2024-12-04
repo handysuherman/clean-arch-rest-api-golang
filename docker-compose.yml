@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   mysql:
-    image: mysql:latest
+    build:
+      context: .
+      dockerfile: build/docker/Dockerfile.mysql
     environment:
       MYSQL_DATABASE: mock_db
       MYSQL_USER: mock_user
@@ -17,7 +19,13 @@ services:
       - "6379:6379"
     volumes:
       - ./tls/redis:/tls/ssl
-      - ./deployment-scripts/redis/redis-entrypoint.sh:/app/docker-entrypoint.sh
+      - ./deployment-scripts/redis/tls/redis-entrypoint.sh:/app/docker-entrypoint.sh
+      - ./deployment-scripts/redis/tls/redis-healthcheck.sh:/app/docker-healthcheck.sh
+    healthcheck:
+      test: ["CMD", /app/docker-healthcheck.sh]
+      interval: 10s
+      timeout: 10s
+      retries: 5
   
   # monitoring
   prometheus:
