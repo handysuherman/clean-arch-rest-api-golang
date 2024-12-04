@@ -12,6 +12,7 @@ import (
 type Querier interface {
 	CountList(ctx context.Context, consumerID int64) (int64, error)
 	Create(ctx context.Context, arg *CreateParams) (sql.Result, error)
+	CreateConsumers(ctx context.Context, arg *CreateConsumersParams) (sql.Result, error)
 	FindByID(ctx context.Context, id int64) (*ConsumerLoanLimit, error)
 	List(ctx context.Context, arg *ListParams) ([]*ConsumerLoanLimit, error)
 	Update(ctx context.Context, arg *UpdateParams) error
