@@ -29,7 +29,7 @@ func NewStore(
 	dbConnection *sql.DB,
 	redisConnection redis.UniversalClient,
 ) Repository {
-	log = log.WithPrefix(fmt.Sprintf("%s-%s", "consumer_loan_limits", constants.Repository))
+	log = log.WithPrefix(fmt.Sprintf("%s-%s", "consumer-loan-limits", constants.Repository))
 
 	return &Store{
 		log:                 log,
