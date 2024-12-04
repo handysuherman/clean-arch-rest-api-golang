@@ -14,7 +14,7 @@ import (
 )
 
 func (a *app) runHTTPServer(ctx context.Context, cancel context.CancelFunc) error {
-	addr := fmt.Sprintf("%s:%d", "0.0.0.0", a.cfg.App.Port)
+	addr := fmt.Sprintf("%s:%d", "0.0.0.0", a.cfg.Services.Internal.Port)
 
 	a.server = server.New(server.WithHostPorts(addr))
 
@@ -35,8 +35,8 @@ func (a *app) runHTTPServer(ctx context.Context, cancel context.CancelFunc) erro
 		},
 	}))
 
-	if a.cfg.App.Environment != "production" {
-		url := swagger.URL(fmt.Sprintf("%s:%d/swagger/doc.json", "0.0.0.0", a.cfg.App.Port))
+	if a.cfg.Services.Internal.Environment != "production" {
+		url := swagger.URL(fmt.Sprintf("%s:%d/swagger/doc.json", "0.0.0.0", a.cfg.Services.Internal.Port))
 
 		a.server.GET("/swagger/*any", swagger.WrapHandler(swaggerFiles.Handler, url, swagger.DefaultModelsExpandDepth(-1)))
 		a.server.GET("/docs", func(c context.Context, ctx *appCtx.RequestContext) {
@@ -53,9 +53,10 @@ func (a *app) runHTTPServer(ctx context.Context, cancel context.CancelFunc) erro
 	}
 
 	a.log.Infof(
-		"APP server running on: %v, SwaggerDocs Enabled: %v",
+		"APP server running on: %v, SwaggerDocs Enabled: %v, TLS Enabled: %v",
 		addr,
-		a.cfg.App.Environment != "production",
+		a.cfg.Services.Internal.Environment != "production",
+		a.cfg.Services.Internal.EnableTLS,
 	)
 
 	return nil
