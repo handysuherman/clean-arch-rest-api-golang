@@ -1,6 +1,6 @@
 package usecase
 
-import "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/affiliated_dealers/domain"
+import "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_loan_limits/domain"
 
 type usecaseImpl struct{}
 
