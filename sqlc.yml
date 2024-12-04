@@ -8,7 +8,7 @@ sql:
       go:
         package: "repository"
         out: "./internal/payment/repository"
-        sql_package: "pgx/v5"
+        sql_package: "github.com/go-sql-driver/mysql"
         emit_json_tags: true
         emit_prepared_queries: false
         emit_interface: true
@@ -21,7 +21,7 @@ sql:
         output_querier_file_name: "mysql_repository.go"
         overrides:
           - go_type: "github.com/shopspring/decimal.Decimal"
-            db_type: "pg_catalog.numeric"
+            db_type: "decimal"
             nullable: true
           - go_type: "github.com/shopspring/decimal.Decimal"
-            db_type: "pg_catalog.numeric"
+            db_type: "decimal"
