@@ -1,0 +1,17 @@
+FROM mysql:latest
+
+COPY ./deployment-scripts/mysql/tls.cnf /etc/mysql/conf.d/
+RUN chown 999:999 /etc/mysql/conf.d/tls.cnf
+
+COPY ./tls/mysql/ca-cert.pem /var/lib/mysql-files/
+RUN chown 999:999 /var/lib/mysql-files/ca-cert.pem
+
+COPY ./tls/mysql/server-cert.pem /var/lib/mysql-files/
+RUN chown 999:999 /var/lib/mysql-files/server-cert.pem
+
+COPY ./tls/mysql/server-key.pem /var/lib/mysql-files/
+RUN chown 999:999 /var/lib/mysql-files/server-key.pem
+RUN chmod 600 /var/lib/mysql-files/server-key.pem
+
+COPY ./deployment-scripts/mysql/tls_user.sql /docker-entrypoint-initdb.d/
+RUN chown 999:999 /docker-entrypoint-initdb.d/tls_user.sql
