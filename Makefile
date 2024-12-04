@@ -6,9 +6,10 @@ DB_TLS_CLIENT_CERT_PATH=$(shell pwd)/tls/mysql/client-cert.pem
 DB_TLS_CLIENT_KEY_PATH=$(shell pwd)/tls/mysql/client-key.pem
 DB_USER=mock_user
 DB_PASSWORD=mock_password
-DB_HOST=constantinopel.xyz-multifinance-mysql.server
+DB_HOST=0.0.0.0
 DB_PORT=3306
-DB_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DN_NAME}?multiStatements=true&tls=custom&x-tls-ca=${DB_TLS_CA_PATH}&x-tls-cert=${DB_TLS_CLIENT_CERT_PATH}&x-tls-key=${DB_TLS_CLIENT_KEY_PATH}
+# for dev environment
+DB_URL=mysql://${DB_USER}:${DB_PASSWORD}@tcp(${DB_HOST}:${DB_PORT})/${DN_NAME}?multiStatements=true
 
 .PHONY: create-migration-file
 create-migration-file:
@@ -20,11 +21,11 @@ sqlc:
 
 .PHONY: migrateup
 migrateup:
-	migrate -path ${MIGRATION_PATH} -database $(DB_URL) -verbose up
+	migrate -path ${MIGRATION_PATH} -database "$(DB_URL)" -verbose up
 
 .PHONY: migratedown
 migratedown:
-	migrate -path ${MIGRATION_PATH} -database $(DB_URL) -verbose down -all
+	migrate -path ${MIGRATION_PATH} -database "$(DB_URL)" -verbose down -all
 
 .PHONY: server
 server:
