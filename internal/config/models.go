@@ -1,6 +1,8 @@
 package config
 
 type Config struct {
-	App        *App        `mapstructure:"app"`
+	Services   *Services   `mapstructure:"services"`
+	Databases  *Databases  `mapstructure:"databases"`
+	TLS        *TLS        `mapstructure:"tls"`
 	Monitoring *Monitoring `mapstructure:"monitoring"`
 }

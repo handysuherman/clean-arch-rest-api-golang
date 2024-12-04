@@ -1,7 +1,7 @@
 package v1handler
 
 func (h *Handler) MapRoutes() {
-	groupHandler := h.server.Group(h.cfg.App.BasePath).Group("/affiliated-dealers")
+	groupHandler := h.server.Group(h.cfg.Services.Internal.ApiBasePath).Group("/affiliated-dealers")
 
 	groupHandler.POST("/", h.Create)
 	groupHandler.GET("/", h.Find)

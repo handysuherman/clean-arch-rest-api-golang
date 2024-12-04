@@ -9,7 +9,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
-func NewCounter(cfg *config.App, name string, protocol string) prometheus.Counter {
+func NewCounter(cfg *config.Internal, name string, protocol string) prometheus.Counter {
 	promCounter := prometheus.CounterOpts{}
 
 	promCounter.Name = fmt.Sprintf("%s_%s_%s_requests_total", cfg.Name, name, protocol)

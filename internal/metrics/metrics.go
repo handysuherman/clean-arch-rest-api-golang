@@ -31,7 +31,7 @@ type Metrics struct {
 	FindByIDAffiliatedDealerHTTPRequest prometheus.Counter
 }
 
-func New(cfg *config.App) *Metrics {
+func New(cfg *config.Internal) *Metrics {
 	return &Metrics{
 		SuccessHTTPRequest: NewCounter(cfg, "success", constants.HTTP),
 		ErrorHTTPRequest:   NewCounter(cfg, "error", constants.HTTP),
