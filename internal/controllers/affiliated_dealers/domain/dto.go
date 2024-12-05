@@ -20,11 +20,11 @@ type AffiliatedDealerList struct {
 	List        []*AffiliatedDealer `json:"list"`
 }
 
-type CreateDTORequestParams struct {
+type CreateAffiliatedDealerDTORequestParams struct {
 	AffiliatedDealerName string `json:"affiliated_dealer_name" validate:"required,gte=0,lte=255"`
 }
 
-type UpdateDTORequestParams struct {
+type UpdateAffiliatedDealerDTORequestParams struct {
 	AffiliatedDealerName *string `json:"affiliated_dealer_name,omitempty"`
 }
 

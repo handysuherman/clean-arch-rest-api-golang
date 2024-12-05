@@ -6,13 +6,13 @@ import (
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
 )
 
-func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateRequestParams {
+func NewCreateRequestParams(arg *domain.CreateAffiliatedDealerDTORequestParams) *domain.CreateRequestParams {
 	return &domain.CreateRequestParams{
 		AffiliatedDealerName: arg.AffiliatedDealerName,
 	}
 }
 
-func NewUpdateRequestParams(arg *domain.UpdateDTORequestParams) *domain.UpdateRequestParams {
+func NewUpdateRequestParams(arg *domain.UpdateAffiliatedDealerDTORequestParams) *domain.UpdateRequestParams {
 	return &domain.UpdateRequestParams{
 		AffiliatedDealerName: arg.AffiliatedDealerName,
 	}
