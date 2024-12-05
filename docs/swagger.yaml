@@ -1,0 +1,322 @@
+basePath: /api/v1/
+definitions:
+  domain.ConsumerTransaction:
+    properties:
+      admin_fee_amount:
+        type: string
+      affiliated_dealer_id:
+        type: integer
+      consumer_id:
+        type: integer
+      contract_number:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      installment_amount:
+        type: string
+      interest_rate:
+        type: string
+      otr_amount:
+        type: string
+      transaction_date:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  domain.ConsumerTransactionList:
+    properties:
+      has_next_page:
+        type: boolean
+      list:
+        items:
+          $ref: '#/definitions/domain.ConsumerTransaction'
+        type: array
+      page:
+        type: integer
+      size:
+        type: integer
+      total_count:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  domain.CreateConsumerTransactionDTORequestParams:
+    properties:
+      admin_fee_amount:
+        type: string
+      affiliated_dealer_id:
+        type: integer
+      consumer_id:
+        type: integer
+      installment_amount:
+        type: string
+      interest_rate:
+        type: string
+      otr_amount:
+        type: string
+    required:
+    - affiliated_dealer_id
+    - consumer_id
+    type: object
+  domain.UpdateConsumerTransactionDTORequestParams:
+    properties:
+      admin_fee_amount:
+        type: string
+      installment_amount:
+        type: string
+      interest_rate:
+        type: string
+      otr_amount:
+        type: string
+    type: object
+  http.IDResponse:
+    properties:
+      id:
+        type: string
+    type: object
+  http.SuccessResponseDto:
+    properties:
+      data: {}
+      status:
+        type: integer
+      timestamp:
+        type: integer
+    type: object
+  httpError.RestError:
+    properties:
+      error:
+        example: Forbidden
+        type: string
+      message: {}
+      status:
+        example: 403
+        type: integer
+      timestamp:
+        example: 1692753495
+        type: integer
+    type: object
+host: 0.0.0.0:50050
+info:
+  contact:
+    email: lireya95@gmail.com
+    name: Handysuherman
+    url: https://github.com/handysuherman
+  description: API untuk Studi Kasus PT. XYZ Golang Developer
+  title: Studi Kasus PT. XYZ Golang Developer
+  version: 1.0.1
+paths:
+  /consumer-transactions:
+    get:
+      consumes:
+      - application/json
+      description: Finding list of Consumer-Transactions
+      parameters:
+      - description: customer_id, determine the customer id
+        in: query
+        name: customer_id
+        required: true
+        type: string
+      - description: search page_size, determine the size of page / limit
+        in: query
+        name: page_size
+        required: true
+        type: string
+      - description: search page_id, determine the number page / offset
+        in: query
+        name: page_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.ConsumerTransactionList'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Find
+      tags:
+      - Consumer-Transactions
+    post:
+      consumes:
+      - application/json
+      description: Create a new consumer transaction with the provided request parameters
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateConsumerTransactionDTORequestParams'
+      - description: Optional idempotency key to ensure the request is only processed
+          once
+        in: header
+        name: x-idempotency-key
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created consumer transaction
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/http.IDResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new Consumer-Transaction
+      tags:
+      - Consumer-Transactions
+  /consumer-transactions/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find Customer-Transaction by ID
+      parameters:
+      - description: Any Associated id From your Source, this parameter is required
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.ConsumerTransaction'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: FindByID
+      tags:
+      - Consumer-Transactions
+    put:
+      consumes:
+      - application/json
+      description: Update an existing consumer transaction by the provided ID and
+        request parameters
+      parameters:
+      - description: ID of the consumer transaction to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Request body for updating the consumer transaction
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateConsumerTransactionDTORequestParams'
+      - description: Optional idempotency key to ensure the request is only processed
+          once
+        in: header
+        name: x-idempotency-key
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated consumer transaction
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.ConsumerTransaction'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing Consumer-Transaction by ID
+      tags:
+      - Consumer-Transactions
+schemes:
+- http
+securityDefinitions:
+  ApiKeyAuth:
+    description: API key required to access the API
+    in: header
+    name: x-api-key
+    type: apiKey
+swagger: "2.0"

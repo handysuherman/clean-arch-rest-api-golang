@@ -54,6 +54,7 @@ const (
 	UserAgent           = "user-agent"
 	XPlatform           = "x-pt-e3f264be"
 	XAPIKey             = "x-api-key"
+	XIdempotencyKey     = "x-idempotency-key"
 	WithCredentials     = "withCredentials"
 	WithCredentialsTrue = "true"
 	Authorization       = "Authorization"

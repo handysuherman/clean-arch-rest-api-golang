@@ -45,6 +45,7 @@ func (a *app) runHTTPServer(ctx context.Context, cancel context.CancelFunc) erro
 		})
 	}
 
+	a.server.Use(mw.AuthPermission(a.cfg.Services.Internal.XApiKey, true))
 	a.bootstrapHandlers(ctx, cancel)
 
 	err := a.server.Run()

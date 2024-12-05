@@ -19,17 +19,22 @@ type flags struct {
 	configFilePath string
 }
 
-// @title API E-ASESMEN EXT API
+// @title Studi Kasus PT. XYZ Golang Developer
 // @version 1.0.1
-// @description API
+// @description API untuk Studi Kasus PT. XYZ Golang Developer
 
 // @contact.name Handysuherman
 // @contact.url https://github.com/handysuherman
 // @contact.email lireya95@gmail.com
 
-// @host 0.0.0.0:3100
+// @host 0.0.0.0:50050
 // @BasePath /api/v1/
 // @schemes http
+
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in header
+// @name x-api-key
+// @description API key required to access the API
 func main() {
 	cmd, err := exportedFlags()
 	if err != nil {

@@ -14,7 +14,7 @@ import (
 	consumerLoanLimitsUsecase "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_loan_limits/usecases"
 
 	consumerTransactionsHandler "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_transactions/delivery/http/v1"
-	// consumer_transactionsRepo "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_transactions/repository"
+	consumerTransactionsRepo "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_transactions/repository"
 	consumerTransactionsUsecase "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_transactions/usecases"
 )
 
@@ -43,9 +43,9 @@ func (a *app) consumerLoanLimitsHandlers() *consumerLoanLimitsHandler.Handler {
 }
 
 func (a *app) consumerTransactionsHandlers() *consumerTransactionsHandler.Handler {
-	// repo := consumerTransactionsRepo.New(a.log, a.cfg)
-	usecase := consumerTransactionsUsecase.New()
-	handler := consumerTransactionsHandler.New(a.log, a.cfg, usecase, a.server, a.metrics)
+	repo := consumerTransactionsRepo.NewStore(a.log, a.cfg, a.mysqlConnection, a.redisConnection)
+	usecase := consumerTransactionsUsecase.New(a.log, a.cfg, a.repo)
+	handler := consumerTransactionsHandler.New(a.log, a.cfg, usecase, a.server, a.metrics, a.validator)
 
 	return handler
 }
