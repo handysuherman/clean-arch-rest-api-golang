@@ -23,13 +23,13 @@ type ConsumerLoanLimitList struct {
 	List        []*ConsumerLoanLimit `json:"list"`
 }
 
-type CreateDTORequestParams struct {
+type CreateConsumerLoanLimitDTORequestParams struct {
 	ConsumerID int64  `json:"consumer_id" validate:"required"`
 	Tenor      int16  `json:"tenor" validate:"required"`
 	Amount     string `json:"amount" validate:"required"`
 }
 
-type UpdateDTORequestParams struct {
+type UpdateConsumerLoanLimitDTORequestParams struct {
 	Tenor  *int16  `json:"tenor"`
 	Amount *string `json:"amount"`
 }

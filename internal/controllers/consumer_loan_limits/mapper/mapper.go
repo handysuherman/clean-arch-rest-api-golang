@@ -6,7 +6,7 @@ import (
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
 )
 
-func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateRequestParams {
+func NewCreateRequestParams(arg *domain.CreateConsumerLoanLimitDTORequestParams) *domain.CreateRequestParams {
 	return &domain.CreateRequestParams{
 		ConsumerID: arg.ConsumerID,
 		Tenor:      arg.Tenor,
@@ -14,7 +14,7 @@ func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateRe
 	}
 }
 
-func NewUpdateRequestParams(arg *domain.UpdateDTORequestParams) *domain.UpdateRequestParams {
+func NewUpdateRequestParams(arg *domain.UpdateConsumerLoanLimitDTORequestParams) *domain.UpdateRequestParams {
 	return &domain.UpdateRequestParams{
 		Tenor:  arg.Tenor,
 		Amount: arg.Amount,
