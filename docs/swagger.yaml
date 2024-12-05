@@ -86,6 +86,42 @@ definitions:
       total_pages:
         type: integer
     type: object
+  domain.ConsumerLoanLimit:
+    properties:
+      amount:
+        type: string
+      consumer_id:
+        type: integer
+      created_at:
+        description: format should be like 0001-01-01 00:00:00Z
+        type: string
+      id:
+        type: integer
+      tenor:
+        type: integer
+      updated_at:
+        description: format should be like 0001-01-01 00:00:00Z
+        type: string
+      updated_by:
+        type: string
+    type: object
+  domain.ConsumerLoanLimitList:
+    properties:
+      has_next_page:
+        type: boolean
+      list:
+        items:
+          $ref: '#/definitions/domain.ConsumerLoanLimit'
+        type: array
+      page:
+        type: integer
+      size:
+        type: integer
+      total_count:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
   domain.ConsumerTransaction:
     properties:
       admin_fee_amount:
@@ -165,6 +201,19 @@ definitions:
     - full_name
     - nik
     type: object
+  domain.CreateConsumerLoanLimitDTORequestParams:
+    properties:
+      amount:
+        type: string
+      consumer_id:
+        type: integer
+      tenor:
+        type: integer
+    required:
+    - amount
+    - consumer_id
+    - tenor
+    type: object
   domain.CreateConsumerTransactionDTORequestParams:
     properties:
       admin_fee_amount:
@@ -206,6 +255,13 @@ definitions:
         type: number
       selfie_photo:
         type: string
+    type: object
+  domain.UpdateConsumerLoanLimitDTORequestParams:
+    properties:
+      amount:
+        type: string
+      tenor:
+        type: integer
     type: object
   domain.UpdateConsumerTransactionDTORequestParams:
     properties:
@@ -446,6 +502,198 @@ paths:
       summary: Update an existing Affiliated Dealer by ID
       tags:
       - Affiliated-Dealers
+  /consumer-loan-limits:
+    get:
+      consumes:
+      - application/json
+      description: find list of Consumer Loan Limits with the provided request parameters
+      parameters:
+      - description: customer_id, determine the customer id
+        in: query
+        name: customer_id
+        required: true
+        type: string
+      - description: search page_size, determine the size of page / limit
+        in: query
+        name: page_size
+        required: true
+        type: string
+      - description: search page_id, determine the number page / offset
+        in: query
+        name: page_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.ConsumerLoanLimitList'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: find list of Consumer Loan Limits
+      tags:
+      - Consumer-Loan-Limits
+    post:
+      consumes:
+      - application/json
+      description: Create a new consumer Loan Limits with the provided request parameters
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateConsumerLoanLimitDTORequestParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created consumer
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/http.IDResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new Consumer Loan Limits
+      tags:
+      - Consumer-Loan-Limits
+  /consumer-loan-limits/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find Consumer Loan Limit by associated id
+      parameters:
+      - description: Any Associated id From your Source, this parameter is required
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.ConsumerLoanLimit'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Find Consumer Loan Limit
+      tags:
+      - Consumer-Loan-Limits
+    put:
+      consumes:
+      - application/json
+      description: Update an existing Consumer Loan Limit by the provided ID and request
+        parameters
+      parameters:
+      - description: ID of the consumer transaction to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Request body for updating the consumer
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateConsumerLoanLimitDTORequestParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated consumer transaction
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/http.IDResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing Consumer Loan Limit by ID
+      tags:
+      - Consumer-Loan-Limits
   /consumer-transactions:
     get:
       consumes:
