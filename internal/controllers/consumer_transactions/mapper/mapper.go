@@ -74,11 +74,11 @@ func ListToDTO(args []*repository.ConsumerTransaction) []*domain.ConsumerTransac
 	return list
 }
 
-func NewFetchProductsParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
+func NewFetchParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
 	var (
-		defaultPage       = 1
-		defaultSize       = 10
-		defaultSearchText = ""
+		defaultPage = 1
+		defaultSize = 10
+		// defaultSearchText = ""
 	)
 
 	if arg.Page == nil {
@@ -89,13 +89,9 @@ func NewFetchProductsParams(arg *domain.FetchDTORequestParams) *domain.FetchPara
 		arg.Size = &defaultSize
 	}
 
-	if arg.Query == nil {
-		arg.Query = &defaultSearchText
-	}
-
 	pq := helper.NewPaginationQuery(*arg.Size, *arg.Page)
 	return &domain.FetchParams{
-		SearchText: *arg.Query,
+		ConsumerID: arg.ConsumerID,
 		Pagination: pq,
 	}
 }

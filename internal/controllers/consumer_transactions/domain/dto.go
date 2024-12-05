@@ -41,7 +41,7 @@ type UpdateDTORequestParams struct {
 }
 
 type FetchDTORequestParams struct {
-	Query *string `json:"query"`
-	Page  *int    `json:"page"`
-	Size  *int    `json:"size"`
+	ConsumerID int64 `json:"consumer_id"`
+	Page       *int  `json:"page"`
+	Size       *int  `json:"size"`
 }
