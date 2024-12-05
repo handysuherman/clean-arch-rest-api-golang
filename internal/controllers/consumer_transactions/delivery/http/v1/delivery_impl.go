@@ -158,7 +158,7 @@ func (h *Handler) Find(ctx context.Context, appCtx *app.RequestContext) {
 // @Param id path string true "ID of the consumer transaction to update"
 // @Param body body domain.UpdateConsumerTransactionDTORequestParams true "Request body for updating the consumer transaction"
 // @Param x-idempotency-key header string false "Optional idempotency key to ensure the request is only processed once"
-// @Success 200 {object} http.SuccessResponseDto{data=domain.ConsumerTransaction} "Successfully updated consumer transaction"
+// @Success 200 {object} http.SuccessResponseDto{data=http.IDResponse} "Successfully updated consumer transaction"
 // @Failure 400 {object} httpError.RestError{}
 // @Failure 403 {object} httpError.RestError{}
 // @Failure 404 {object} httpError.RestError{}

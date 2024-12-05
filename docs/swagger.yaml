@@ -1,5 +1,55 @@
 basePath: /api/v1/
 definitions:
+  domain.Consumer:
+    properties:
+      birth_date:
+        type: string
+      birth_place:
+        type: string
+      created_at:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      is_activated:
+        type: boolean
+      is_activated_at:
+        type: string
+      is_activated_updated_at:
+        type: string
+      ktp_photo:
+        type: string
+      legal_name:
+        type: string
+      nik:
+        type: string
+      salary:
+        type: string
+      selfie_photo:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  domain.ConsumerList:
+    properties:
+      has_next_page:
+        type: boolean
+      list:
+        items:
+          $ref: '#/definitions/domain.Consumer'
+        type: array
+      page:
+        type: integer
+      size:
+        type: integer
+      total_count:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
   domain.ConsumerTransaction:
     properties:
       admin_fee_amount:
@@ -44,6 +94,32 @@ definitions:
       total_pages:
         type: integer
     type: object
+  domain.CreateConsumerDTORequestParams:
+    properties:
+      birth_date:
+        type: string
+      birth_place:
+        type: string
+      full_name:
+        maxLength: 255
+        minLength: 5
+        type: string
+      ktp_photo:
+        type: string
+      legal_name:
+        type: string
+      nik:
+        maxLength: 16
+        minLength: 0
+        type: string
+      salary:
+        type: number
+      selfie_photo:
+        type: string
+    required:
+    - full_name
+    - nik
+    type: object
   domain.CreateConsumerTransactionDTORequestParams:
     properties:
       admin_fee_amount:
@@ -61,6 +137,23 @@ definitions:
     required:
     - affiliated_dealer_id
     - consumer_id
+    type: object
+  domain.UpdateConsumerDTORequestParams:
+    properties:
+      birth_date:
+        type: string
+      birth_place:
+        type: string
+      full_name:
+        type: string
+      is_activated:
+        type: boolean
+      ktp_photo:
+        type: string
+      salary:
+        type: number
+      selfie_photo:
+        type: string
     type: object
   domain.UpdateConsumerTransactionDTORequestParams:
     properties:
@@ -288,7 +381,7 @@ paths:
             - $ref: '#/definitions/http.SuccessResponseDto'
             - properties:
                 data:
-                  $ref: '#/definitions/domain.ConsumerTransaction'
+                  $ref: '#/definitions/http.IDResponse'
               type: object
         "400":
           description: Bad Request
@@ -311,6 +404,197 @@ paths:
       summary: Update an existing Consumer-Transaction by ID
       tags:
       - Consumer-Transactions
+  /consumers:
+    get:
+      consumes:
+      - application/json
+      description: find list of consumers with the provided request parameters
+      parameters:
+      - description: search q, determine either full_name or legal_name of the user
+        in: query
+        name: q
+        required: true
+        type: string
+      - description: search page_size, determine the size of page / limit
+        in: query
+        name: page_size
+        required: true
+        type: string
+      - description: search page_id, determine the number page / offset
+        in: query
+        name: page_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.ConsumerList'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: find list of Consumers
+      tags:
+      - Consumers
+    post:
+      consumes:
+      - application/json
+      description: Create a new consumer with the provided request parameters
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateConsumerDTORequestParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created consumer
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/http.IDResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new Consumer
+      tags:
+      - Consumers
+  /consumers/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find consumer by associated id
+      parameters:
+      - description: Any Associated id From your Source, this parameter is required
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Consumer'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Find Consumer
+      tags:
+      - Consumers
+    put:
+      consumes:
+      - application/json
+      description: Update an existing consumer by the provided ID and request parameters
+      parameters:
+      - description: ID of the consumer transaction to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Request body for updating the consumer
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateConsumerDTORequestParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated consumer transaction
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/http.IDResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing Consumer by ID
+      tags:
+      - Consumers
 schemes:
 - http
 securityDefinitions:
