@@ -9,6 +9,7 @@ services:
     operation_timeout: 15s
     x_api_key: 8feebf5449a66e3b7f7da7be3a71421c3fac62078227dbf9c66a850237b19191
     addr: "0.0.0.0"
+    api_base_path: /api/v1
     port: 50050
 databases:
   mysql:
