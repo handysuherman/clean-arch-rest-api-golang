@@ -8,7 +8,6 @@ type CreateRequestParams struct {
 	InstallmentAmount  *string `json:"installment_amount"`
 	OtrAmount          *string `json:"otr_amount"`
 	InterestRate       *string `json:"interest_rate"`
-	TransactionDate    string  `json:"transaction_date"`
 	AffiliatedDealerID int64   `json:"affiliated_dealer_id"`
 }
 
