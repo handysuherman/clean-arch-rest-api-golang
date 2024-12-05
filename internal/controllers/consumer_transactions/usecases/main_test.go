@@ -48,7 +48,10 @@ func TestMain(m *testing.M) {
 type mockArgs struct {
 	createParams     *domain.CreateRequestParams
 	createRepoParams *repository.CreateParams
-	idempotencyKey   string
+	updateParams     *domain.UpdateRequestParams
+	updateRepoParams *repository.UpdateParams
+
+	idempotencyKey string
 
 	repoResponse *repository.ConsumerTransaction
 }
@@ -90,14 +93,20 @@ func (ex *eqFindByIDMatcher) String() string {
 
 func createRandom(t *testing.T) *mockArgs {
 	repoResponse := createRepositoryResponse(t)
+
 	createParams := createParams(t, repoResponse)
 	createRepoParams := createRepositoryParams(t, repoResponse)
+
+	updateParams := updateParams(t, repoResponse)
+	updateRepoParams := updateRepositoryParams(t, repoResponse)
 
 	return &mockArgs{
 		createParams:     createParams,
 		idempotencyKey:   helper.RandomString(32),
 		createRepoParams: createRepoParams,
 		repoResponse:     repoResponse,
+		updateParams:     updateParams,
+		updateRepoParams: updateRepoParams,
 	}
 }
 
@@ -114,6 +123,39 @@ func createParams(t *testing.T, repoResponse *repository.ConsumerTransaction) *d
 		InstallmentAmount:  &installmentAmountStr,
 		OtrAmount:          &otrAmountStr,
 		InterestRate:       &interestRateStr,
+	}
+}
+
+func updateParams(t *testing.T, repoResponse *repository.ConsumerTransaction) *domain.UpdateRequestParams {
+	adminFeeAmountStr := repoResponse.AdminFeeAmount.Decimal.String()
+	installmentAmountStr := repoResponse.InstallmentAmount.Decimal.String()
+	otrAmountStr := repoResponse.OtrAmount.Decimal.String()
+	interestRateStr := repoResponse.InterestRate.Decimal.String()
+
+	return &domain.UpdateRequestParams{
+		AdminFeeAmount:    &adminFeeAmountStr,
+		InstallmentAmount: &installmentAmountStr,
+		OtrAmount:         &otrAmountStr,
+		InterestRate:      &interestRateStr,
+	}
+}
+
+func updateRepositoryParams(t *testing.T, repoResponse *repository.ConsumerTransaction) *repository.UpdateParams {
+	return &repository.UpdateParams{
+		AdminFeeAmount:    repoResponse.AdminFeeAmount,
+		InstallmentAmount: repoResponse.InstallmentAmount,
+		OtrAmount:         repoResponse.OtrAmount,
+		InterestRate:      repoResponse.InterestRate,
+		UpdatedAt: sql.NullString{
+			String: repoResponse.UpdatedAt,
+			Valid:  true,
+		},
+		// for now, we need place holder, as soon authentication service involved this should be replaced by issuer id
+		UpdatedBy: sql.NullString{
+			String: "system",
+			Valid:  true,
+		},
+		ID: repoResponse.ID,
 	}
 }
 

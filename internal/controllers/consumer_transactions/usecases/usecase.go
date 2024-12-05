@@ -8,6 +8,8 @@ import (
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_transactions/repository"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/constants"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/logger"
+	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/tracing"
+	"github.com/opentracing/opentracing-go"
 )
 
 type usecaseImpl struct {
@@ -21,9 +23,17 @@ func New(
 	cfg *config.Config,
 	repository repository.Repository,
 ) domain.Usecase {
-	return usecaseImpl{
+	return &usecaseImpl{
 		log:        log.WithPrefix(fmt.Sprintf("%s-%s", "consumer-transactions", constants.Usecase)),
 		cfg:        cfg,
 		repository: repository,
 	}
+}
+
+func (u *usecaseImpl) errorResponse(span opentracing.Span, details string, err error) error {
+	errfmt := fmt.Errorf("%s: %v", details, err)
+	u.log.Warn(errfmt)
+	tracing.TraceWithError(span, errfmt)
+
+	return err
 }

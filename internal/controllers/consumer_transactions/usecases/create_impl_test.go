@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strconv"
 	"testing"
 	"time"
 
@@ -34,7 +35,7 @@ func Test_MOCK_CREATE(t *testing.T) {
 				store.EXPECT().GetIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey)).Times(1).Return(int64(1), nil)
 
 				store.EXPECT().CreateTx(gomock.Any(), EqCreateTxParamsMatcher(&repository.CreateTxParams{Create: *mockArgs.createRepoParams})).Times(0)
-				store.EXPECT().Put(gomock.Any(), gomock.Eq(mockArgs.repoResponse.ID), gomock.Eq(mockArgs.repoResponse)).Times(0)
+				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
 
 				store.EXPECT().PutIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey), gomock.Eq(mockArgs.repoResponse.ID)).Times(0)
 			},
@@ -50,9 +51,25 @@ func Test_MOCK_CREATE(t *testing.T) {
 				store.EXPECT().GetIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey)).Times(1).Return(int64(0), errors.New("not found"))
 
 				store.EXPECT().CreateTx(gomock.Any(), EqCreateTxParamsMatcher(&repository.CreateTxParams{Create: *mockArgs.createRepoParams})).Times(1).Return(repository.CreateTxResult{ConsumerTransaction: mockArgs.repoResponse}, nil)
-				store.EXPECT().Put(gomock.Any(), gomock.Eq(mockArgs.repoResponse.ID), gomock.Eq(mockArgs.repoResponse)).Times(1)
+				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(1)
 
 				store.EXPECT().PutIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey), gomock.Eq(mockArgs.repoResponse.ID)).Times(1)
+			},
+			checkResponse: func(t *testing.T, res int64, err error) {
+				require.NoError(t, err)
+			},
+		},
+		{
+			tname:          "OK_IDEMPOTENCY_NIL",
+			body:           mockArgs.createParams,
+			idempotencyKey: nil,
+			stubs: func(store *mock.MockRepository) {
+				store.EXPECT().GetIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey)).Times(0)
+
+				store.EXPECT().CreateTx(gomock.Any(), EqCreateTxParamsMatcher(&repository.CreateTxParams{Create: *mockArgs.createRepoParams})).Times(1).Return(repository.CreateTxResult{ConsumerTransaction: mockArgs.repoResponse}, nil)
+				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(1)
+
+				store.EXPECT().PutIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey), gomock.Eq(mockArgs.repoResponse.ID)).Times(0)
 			},
 			checkResponse: func(t *testing.T, res int64, err error) {
 				require.NoError(t, err)
@@ -66,7 +83,7 @@ func Test_MOCK_CREATE(t *testing.T) {
 				store.EXPECT().GetIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey)).Times(1).Return(int64(0), errors.New("not found"))
 
 				store.EXPECT().CreateTx(gomock.Any(), EqCreateTxParamsMatcher(&repository.CreateTxParams{Create: *mockArgs.createRepoParams})).Times(1).Return(repository.CreateTxResult{}, sql.ErrTxDone)
-				store.EXPECT().Put(gomock.Any(), gomock.Eq(mockArgs.repoResponse.ID), gomock.Eq(mockArgs.repoResponse)).Times(0)
+				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
 
 				store.EXPECT().PutIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey), gomock.Eq(mockArgs.repoResponse.ID)).Times(0)
 			},
@@ -83,7 +100,7 @@ func Test_MOCK_CREATE(t *testing.T) {
 				store.EXPECT().GetIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey)).Times(1).Return(int64(0), errors.New("not found"))
 
 				store.EXPECT().CreateTx(gomock.Any(), EqCreateTxParamsMatcher(&repository.CreateTxParams{Create: *mockArgs.createRepoParams})).Times(1).Return(repository.CreateTxResult{}, sql.ErrConnDone)
-				store.EXPECT().Put(gomock.Any(), gomock.Eq(mockArgs.repoResponse.ID), gomock.Eq(mockArgs.repoResponse)).Times(0)
+				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
 
 				store.EXPECT().PutIdempotencyCreate(gomock.Any(), gomock.Eq(mockArgs.idempotencyKey), gomock.Eq(mockArgs.repoResponse.ID)).Times(0)
 			},
@@ -165,26 +182,26 @@ func (ex *eqCreateTxParamsMatcher) String() string {
 	var errMsg string
 
 	if ex.arg.Create.ConsumerID == int64(0) {
-		errMsg += fmt.Sprint("consumer id should not be empty or zero")
+		errMsg += "consumer id should not be empty or zero\n"
 	}
 
 	if ex.arg.Create.ContractNumber == "" {
-		errMsg += fmt.Sprint("contract number should not be empty")
+		errMsg += "contract number should not be empty\n"
 	}
 
 	if ex.arg.Create.AffiliatedDealerID == int64(0) {
-		errMsg += fmt.Sprint("affiliate dealer id should not be empty")
+		errMsg += "affiliate dealer id should not be empty\n"
 	}
 
 	_, err := time.Parse(time.RFC3339Nano, ex.arg.Create.TransactionDate)
 	if err != nil {
-		errMsg += fmt.Sprintf("transaction date doesnt reflect the time.RFC3339Nano Layout")
+		errMsg += "transaction date doesnt reflect the time.RFC3339Nano Layout\n"
 	}
 
 	_, err = time.Parse(time.RFC3339Nano, ex.arg.Create.CreatedAt)
 	if err != nil {
-		errMsg += fmt.Sprint("created at doesnt reflect the time.RFC3339Nano layout")
+		errMsg += "created at doesnt reflect the time.RFC3339Nano layout\n"
 	}
 
-	return errMsg + fmt.Sprintf("matches arg: %v", ex.arg)
+	return errMsg + fmt.Sprintf("matches arg: %v\n", ex.arg)
 }
