@@ -3,7 +3,6 @@ package usecases
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"strconv"
 	"testing"
 
@@ -78,7 +77,7 @@ func Test_MOCK_FIND_BY_ID(t *testing.T) {
 			tname: "OK_CACHE_MISS",
 			id:    mockArgs.repoResponse.ID,
 			stubs: func(store *mock.MockRepository) {
-				store.EXPECT().Get(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10))).Times(1).Return(nil, errors.New("redis not found"))
+				store.EXPECT().Get(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10))).Times(1).Return(nil, nil)
 				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.repoResponse.ID)).Times(1).Return(mockArgs.repoResponse, nil)
 				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(1)
 			},
@@ -130,7 +129,7 @@ func Test_MOCK_FIND_BY_ID(t *testing.T) {
 			tname: "ERR_FIND_BY_ID_NOT_FOUND",
 			id:    mockArgs.repoResponse.ID,
 			stubs: func(store *mock.MockRepository) {
-				store.EXPECT().Get(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10))).Times(1).Return(nil, errors.New("redis not found"))
+				store.EXPECT().Get(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10))).Times(1).Return(nil, nil)
 				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.repoResponse.ID)).Times(1).Return(nil, sql.ErrNoRows)
 				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
 			},
@@ -143,7 +142,7 @@ func Test_MOCK_FIND_BY_ID(t *testing.T) {
 			tname: "ERR_FIND_BY_ID_INTERNAL_SERVER_ERROR",
 			id:    mockArgs.repoResponse.ID,
 			stubs: func(store *mock.MockRepository) {
-				store.EXPECT().Get(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10))).Times(1).Return(nil, errors.New("redis not found"))
+				store.EXPECT().Get(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10))).Times(1).Return(nil, nil)
 				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.repoResponse.ID)).Times(1).Return(nil, sql.ErrConnDone)
 				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
 			},
