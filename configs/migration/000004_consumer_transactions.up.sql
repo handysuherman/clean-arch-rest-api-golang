@@ -20,3 +20,7 @@ ALTER TABLE `consumer_transactions`
 ALTER TABLE `consumer_transactions`
   ADD CONSTRAINT `fk_consumer_transactions_affiliated_dealer_id`
   FOREIGN KEY (`affiliated_dealer_id`) REFERENCES `affiliated_dealers` (`id`);
+
+ALTER TABLE `consumer_transactions`
+ADD CONSTRAINT `uq_consumer_contract_dealer`
+UNIQUE (`consumer_id`, `contract_number`, `affiliated_dealer_id`);
