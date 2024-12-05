@@ -88,8 +88,9 @@ func (h *Handler) Create(ctx context.Context, appCtx *app.RequestContext) {
 	})
 }
 
-// @Summary Find
-// @Description Finding list of Consumer-Transactions
+// Find Consumer Transactions
+// @Summary find list of Consumer-Transactions
+// @Description find list of consumer transactions with the provided request parameters
 // @Tags Consumer-Transactions
 // @Accept json
 // @Produce json
@@ -221,8 +222,9 @@ func (h *Handler) Update(ctx context.Context, appCtx *app.RequestContext) {
 	})
 }
 
-// @Summary FindByID
-// @Description Find Customer-Transaction by ID
+// FindByID Consumer Transaction
+// @Summary Find Consumer-Transaction
+// @Description Find consumer transaction by associated id
 // @Tags Consumer-Transactions
 // @Accept json
 // @Produce json

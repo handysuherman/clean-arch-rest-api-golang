@@ -26,7 +26,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Finding list of Consumer-Transactions",
+                "description": "find list of consumer transactions with the provided request parameters",
                 "consumes": [
                     "application/json"
                 ],
@@ -36,7 +36,7 @@ const docTemplate = `{
                 "tags": [
                     "Consumer-Transactions"
                 ],
-                "summary": "Find",
+                "summary": "find list of Consumer-Transactions",
                 "parameters": [
                     {
                         "type": "string",
@@ -192,7 +192,7 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Find Customer-Transaction by ID",
+                "description": "Find consumer transaction by associated id",
                 "consumes": [
                     "application/json"
                 ],
@@ -202,7 +202,7 @@ const docTemplate = `{
                 "tags": [
                     "Consumer-Transactions"
                 ],
-                "summary": "FindByID",
+                "summary": "Find Consumer-Transaction",
                 "parameters": [
                     {
                         "type": "string",

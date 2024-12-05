@@ -113,7 +113,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Finding list of Consumer-Transactions
+      description: find list of consumer transactions with the provided request parameters
       parameters:
       - description: customer_id, determine the customer id
         in: query
@@ -160,7 +160,7 @@ paths:
             $ref: '#/definitions/httpError.RestError'
       security:
       - ApiKeyAuth: []
-      summary: Find
+      summary: find list of Consumer-Transactions
       tags:
       - Consumer-Transactions
     post:
@@ -216,7 +216,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Find Customer-Transaction by ID
+      description: Find consumer transaction by associated id
       parameters:
       - description: Any Associated id From your Source, this parameter is required
         in: path
@@ -253,7 +253,7 @@ paths:
             $ref: '#/definitions/httpError.RestError'
       security:
       - ApiKeyAuth: []
-      summary: FindByID
+      summary: Find Consumer-Transaction
       tags:
       - Consumer-Transactions
     put:
