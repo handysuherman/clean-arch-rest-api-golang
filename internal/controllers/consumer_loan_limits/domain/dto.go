@@ -1,5 +1,7 @@
 package domain
 
+import "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
+
 type ConsumerLoanLimit struct {
 	ID         int64  `json:"id"`
 	ConsumerID int64  `json:"consumer_id"`
@@ -33,7 +35,6 @@ type UpdateDTORequestParams struct {
 }
 
 type FetchDTORequestParams struct {
-	Query *string `json:"query"`
-	Page  *int    `json:"page"`
-	Size  *int    `json:"size"`
+	ConsumerID int64              `json:"consumer_id"`
+	Pagination *helper.Pagination `json:"pagination"`
 }

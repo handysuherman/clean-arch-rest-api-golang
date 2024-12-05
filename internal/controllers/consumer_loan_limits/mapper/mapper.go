@@ -48,29 +48,10 @@ func ListToDTO(args []*repository.ConsumerLoanLimit) []*domain.ConsumerLoanLimit
 	return list
 }
 
-func NewFetchProductsParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
-	var (
-		defaultPage       = 1
-		defaultSize       = 10
-		defaultSearchText = ""
-	)
-
-	if arg.Page == nil {
-		arg.Page = &defaultPage
-	}
-
-	if arg.Size == nil {
-		arg.Size = &defaultSize
-	}
-
-	if arg.Query == nil {
-		arg.Query = &defaultSearchText
-	}
-
-	pq := helper.NewPaginationQuery(*arg.Size, *arg.Page)
+func NewFetchParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
 	return &domain.FetchParams{
-		SearchText: *arg.Query,
-		Pagination: pq,
+		ConsumerID: arg.ConsumerID,
+		Pagination: arg.Pagination,
 	}
 }
 
