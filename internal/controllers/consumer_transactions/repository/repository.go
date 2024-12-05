@@ -15,8 +15,11 @@ type Repository interface {
 	Querier
 	RedisRepository
 
-	// Create Consumer Transaction with Database Transaction
+	// Create Consumer Transaction with Database Transaction for better consistency
 	CreateTx(ctx context.Context, arg *CreateTxParams) (CreateTxResult, error)
+
+	// Update Consumer Transaction with Database Transaction
+	UpdateTx(ctx context.Context, arg *UpdateTxParams) (UpdateTxResult, error)
 }
 
 type Store struct {
