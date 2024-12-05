@@ -44,7 +44,7 @@ func (a *app) consumerLoanLimitsHandlers() *consumerLoanLimitsHandler.Handler {
 
 func (a *app) consumerTransactionsHandlers() *consumerTransactionsHandler.Handler {
 	repo := consumerTransactionsRepo.NewStore(a.log, a.cfg, a.mysqlConnection, a.redisConnection)
-	usecase := consumerTransactionsUsecase.New(a.log, a.cfg, a.repo)
+	usecase := consumerTransactionsUsecase.New(a.log, a.cfg, repo)
 	handler := consumerTransactionsHandler.New(a.log, a.cfg, usecase, a.server, a.metrics, a.validator)
 
 	return handler
