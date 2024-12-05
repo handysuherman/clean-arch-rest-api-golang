@@ -16,6 +16,10 @@ type SuccessResponseDto struct {
 	Data      interface{} `json:"data"`
 }
 
+type IDResponse struct {
+	Id string `json:"id"`
+}
+
 type SuccessResp struct {
 	Status                int         `json:"status"`
 	Data                  interface{} `json:"data"`

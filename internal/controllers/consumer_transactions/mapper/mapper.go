@@ -6,7 +6,7 @@ import (
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
 )
 
-func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateRequestParams {
+func NewCreateRequestParams(arg *domain.CreateConsumerTransactionDTORequestParams) *domain.CreateRequestParams {
 	return &domain.CreateRequestParams{
 		ConsumerID:         arg.ConsumerID,
 		AffiliatedDealerID: arg.AffiliatedDealerID,
@@ -17,7 +17,7 @@ func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateRe
 	}
 }
 
-func NewUpdateRequestParams(arg *domain.UpdateDTORequestParams) *domain.UpdateRequestParams {
+func NewUpdateRequestParams(arg *domain.UpdateConsumerTransactionDTORequestParams) *domain.UpdateRequestParams {
 	return &domain.UpdateRequestParams{
 		AdminFeeAmount:    arg.AdminFeeAmount,
 		InstallmentAmount: arg.InstallmentAmount,
@@ -74,29 +74,10 @@ func ListToDTO(args []*repository.ConsumerTransaction) []*domain.ConsumerTransac
 	return list
 }
 
-func NewFetchProductsParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
-	var (
-		defaultPage       = 1
-		defaultSize       = 10
-		defaultSearchText = ""
-	)
-
-	if arg.Page == nil {
-		arg.Page = &defaultPage
-	}
-
-	if arg.Size == nil {
-		arg.Size = &defaultSize
-	}
-
-	if arg.Query == nil {
-		arg.Query = &defaultSearchText
-	}
-
-	pq := helper.NewPaginationQuery(*arg.Size, *arg.Page)
+func NewFetchParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
 	return &domain.FetchParams{
-		SearchText: *arg.Query,
-		Pagination: pq,
+		ConsumerID: arg.ConsumerID,
+		Pagination: arg.Pagination,
 	}
 }
 

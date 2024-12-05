@@ -1,5 +1,7 @@
 package domain
 
+import "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
+
 type ConsumerTransaction struct {
 	ID                 int64   `json:"id"`
 	ConsumerID         int64   `json:"consumer_id"`
@@ -24,16 +26,16 @@ type ConsumerTransactionList struct {
 	List        []*ConsumerTransaction `json:"list"`
 }
 
-type CreateDTORequestParams struct {
-	ConsumerID         int64   `json:"consumer_id"`
+type CreateConsumerTransactionDTORequestParams struct {
+	ConsumerID         int64   `json:"consumer_id" validate:"required"`
 	AdminFeeAmount     *string `json:"admin_fee_amount"`
 	InstallmentAmount  *string `json:"installment_amount"`
 	OtrAmount          *string `json:"otr_amount"`
 	InterestRate       *string `json:"interest_rate"`
-	AffiliatedDealerID int64   `json:"affiliated_dealer_id"`
+	AffiliatedDealerID int64   `json:"affiliated_dealer_id" validate:"required"`
 }
 
-type UpdateDTORequestParams struct {
+type UpdateConsumerTransactionDTORequestParams struct {
 	AdminFeeAmount    *string `json:"admin_fee_amount"`
 	InstallmentAmount *string `json:"installment_amount"`
 	OtrAmount         *string `json:"otr_amount"`
@@ -41,7 +43,6 @@ type UpdateDTORequestParams struct {
 }
 
 type FetchDTORequestParams struct {
-	Query *string `json:"query"`
-	Page  *int    `json:"page"`
-	Size  *int    `json:"size"`
+	ConsumerID int64              `json:"consumer_id"`
+	Pagination *helper.Pagination `json:"pagination"`
 }
