@@ -31,7 +31,7 @@ func New(
 }
 
 func (u *usecaseImpl) errorResponse(span opentracing.Span, details string, err error) error {
-	errfmt := fmt.Errorf("%s: %v", details, err)
+	errfmt := fmt.Errorf("%s: %w", details, err)
 	u.log.Warn(errfmt)
 	tracing.TraceWithError(span, errfmt)
 

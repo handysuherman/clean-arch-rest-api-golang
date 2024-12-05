@@ -20,6 +20,7 @@ type UpdateRequestParams struct {
 	Salary      *float64 `json:"salary"`
 	KTPPhoto    *string  `json:"ktp_photo"`
 	SelfiePhoto *string  `json:"selfie_photo"`
+	IsActivated *bool    `json:"is_activated"`
 }
 
 type FetchParams struct {

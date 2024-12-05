@@ -141,16 +141,17 @@ func listRepoParams(t *testing.T, params *domain.FetchParams) *repository.ListPa
 
 func createParams(t *testing.T, repoResponse *repository.Consumer) *domain.CreateRequestParams {
 	salaryFloat, _ := repoResponse.Salary.Decimal.Float64()
+	birthDateStr := repoResponse.BirthDate.Time.String()
 
 	return &domain.CreateRequestParams{
 		Nik:         repoResponse.Nik,
 		FullName:    repoResponse.FullName,
-		LegalName:   repoResponse.LegalName.String,
-		BirthPlace:  repoResponse.BirthPlace.String,
-		BirthDate:   repoResponse.BirthDate.Time.String(),
-		Salary:      salaryFloat,
-		SelfiePhoto: repoResponse.SelfiePhoto.String,
-		KTPPhoto:    repoResponse.KtpPhoto.String,
+		LegalName:   &repoResponse.LegalName.String,
+		BirthPlace:  &repoResponse.BirthPlace.String,
+		BirthDate:   &birthDateStr,
+		Salary:      &salaryFloat,
+		SelfiePhoto: &repoResponse.SelfiePhoto.String,
+		KTPPhoto:    &repoResponse.KtpPhoto.String,
 	}
 }
 
