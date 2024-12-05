@@ -47,12 +47,13 @@ func TestMain(m *testing.M) {
 }
 
 type mockArgs struct {
-	createParams     *domain.CreateRequestParams
-	createRepoParams *repository.CreateParams
-	updateParams     *domain.UpdateRequestParams
-	updateRepoParams *repository.UpdateParams
-	listParams       *domain.FetchParams
-	listRepoParams   *repository.ListParams
+	createParams        *domain.CreateRequestParams
+	createRepoParams    *repository.CreateParams
+	updateParams        *domain.UpdateRequestParams
+	updateRepoParams    *repository.UpdateParams
+	listParams          *domain.FetchParams
+	listRepoParams      *repository.ListParams
+	countListRepoParams *repository.CountListParams
 
 	idempotencyKey string
 
@@ -104,17 +105,18 @@ func createRandom(t *testing.T) *mockArgs {
 	updateRepoParams := updateRepositoryParams(t, repoResponse)
 
 	listParams := listParams(t, repoResponse)
-	listRepoParams := listRepoParams(t, listParams)
+	listRepoParams, countListRepoParams := listRepoParams(t, listParams)
 
 	return &mockArgs{
-		createParams:     createParams,
-		idempotencyKey:   helper.RandomString(32),
-		createRepoParams: createRepoParams,
-		repoResponse:     repoResponse,
-		updateParams:     updateParams,
-		updateRepoParams: updateRepoParams,
-		listParams:       listParams,
-		listRepoParams:   listRepoParams,
+		createParams:        createParams,
+		idempotencyKey:      helper.RandomString(32),
+		createRepoParams:    createRepoParams,
+		repoResponse:        repoResponse,
+		updateParams:        updateParams,
+		updateRepoParams:    updateRepoParams,
+		listParams:          listParams,
+		listRepoParams:      listRepoParams,
+		countListRepoParams: countListRepoParams,
 	}
 }
 
@@ -125,18 +127,23 @@ func listParams(t *testing.T, repoResponse *repository.Consumer) *domain.FetchPa
 	}
 }
 
-func listRepoParams(t *testing.T, params *domain.FetchParams) *repository.ListParams {
+func listRepoParams(t *testing.T, params *domain.FetchParams) (*repository.ListParams, *repository.CountListParams) {
 	searchText := "%" + params.SearchText + "%s"
 
-	return &repository.ListParams{
+	countListArg := &repository.CountListParams{
 		FullName: searchText,
 		LegalName: sql.NullString{
 			String: searchText,
 			Valid:  true,
 		},
-		Limit:  int32(params.Pagination.GetLimit()),
-		Offset: int32(params.Pagination.GetOffset()),
 	}
+
+	return &repository.ListParams{
+		FullName:  countListArg.FullName,
+		LegalName: countListArg.LegalName,
+		Limit:     int32(params.Pagination.GetLimit()),
+		Offset:    int32(params.Pagination.GetOffset()),
+	}, countListArg
 }
 
 func createParams(t *testing.T, repoResponse *repository.Consumer) *domain.CreateRequestParams {
