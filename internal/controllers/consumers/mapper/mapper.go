@@ -6,8 +6,8 @@ import (
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
 )
 
-func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateRequestParams {
-	return &domain.CreateRequestParams{
+func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateConsumerRequestParams {
+	return &domain.CreateConsumerRequestParams{
 		Nik:         arg.Nik,
 		FullName:    arg.FullName,
 		LegalName:   arg.LegalName,
@@ -19,11 +19,9 @@ func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateRe
 	}
 }
 
-func NewUpdateRequestParams(arg *domain.UpdateDTORequestParams) *domain.UpdateRequestParams {
-	return &domain.UpdateRequestParams{
-		Nik:         arg.Nik,
+func NewUpdateRequestParams(arg *domain.UpdateDTORequestParams) *domain.UpdateConsumerRequestParams {
+	return &domain.UpdateConsumerRequestParams{
 		FullName:    arg.FullName,
-		LegalName:   arg.LegalName,
 		BirthPlace:  arg.BirthPlace,
 		BirthDate:   arg.BirthDate,
 		Salary:      arg.Salary,
