@@ -46,29 +46,18 @@ func ListToDTO(args []*repository.AffiliatedDealer) []*domain.AffiliatedDealer {
 	return list
 }
 
-func NewFetchProductsParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
+func NewFetchParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
 	var (
-		defaultPage       = 1
-		defaultSize       = 10
-		defaultSearchText = ""
+		searchText = ""
 	)
 
-	if arg.Page == nil {
-		arg.Page = &defaultPage
+	if arg.Query != nil {
+		searchText = *arg.Query
 	}
 
-	if arg.Size == nil {
-		arg.Size = &defaultSize
-	}
-
-	if arg.Query == nil {
-		arg.Query = &defaultSearchText
-	}
-
-	pq := helper.NewPaginationQuery(*arg.Size, *arg.Page)
 	return &domain.FetchParams{
-		SearchText: *arg.Query,
-		Pagination: pq,
+		SearchText: searchText,
+		Pagination: arg.Pagination,
 	}
 }
 

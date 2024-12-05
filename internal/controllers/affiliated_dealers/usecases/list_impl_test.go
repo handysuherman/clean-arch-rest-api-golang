@@ -27,7 +27,7 @@ func Test_MOCK_LIST(t *testing.T) {
 			tname: "OK",
 			body:  mockArgs.listParams,
 			stubs: func(store *mock.MockRepository) {
-				store.EXPECT().CountList(gomock.Any(), gomock.Eq(mockArgs.listParams.SearchText)).Times(1).Return(int64(1), nil)
+				store.EXPECT().CountList(gomock.Any(), gomock.Eq(mockArgs.listRepoParams.AffiliatedDealerName)).Times(1).Return(int64(1), nil)
 				store.EXPECT().List(gomock.Any(), gomock.Eq(mockArgs.listRepoParams)).Times(1).Return(mockList, nil)
 			},
 			checkResponse: func(t *testing.T, res *domain.AffiliatedDealerList, err error) {
@@ -39,7 +39,7 @@ func Test_MOCK_LIST(t *testing.T) {
 			tname: "ERR_COUNT_LIST_INTERNAL_SERVER_ERROR",
 			body:  mockArgs.listParams,
 			stubs: func(store *mock.MockRepository) {
-				store.EXPECT().CountList(gomock.Any(), gomock.Eq(mockArgs.listParams.SearchText)).Times(1).Return(int64(0), sql.ErrConnDone)
+				store.EXPECT().CountList(gomock.Any(), gomock.Eq(mockArgs.listRepoParams.AffiliatedDealerName)).Times(1).Return(int64(0), sql.ErrConnDone)
 				store.EXPECT().List(gomock.Any(), gomock.Eq(mockArgs.listRepoParams)).Times(0)
 			},
 			checkResponse: func(t *testing.T, res *domain.AffiliatedDealerList, err error) {
@@ -51,7 +51,7 @@ func Test_MOCK_LIST(t *testing.T) {
 			tname: "ERR_LIST_INTERNAL_SERVER_ERROR",
 			body:  mockArgs.listParams,
 			stubs: func(store *mock.MockRepository) {
-				store.EXPECT().CountList(gomock.Any(), gomock.Eq(mockArgs.listParams.SearchText)).Times(1).Return(int64(1), nil)
+				store.EXPECT().CountList(gomock.Any(), gomock.Eq(mockArgs.listRepoParams.AffiliatedDealerName)).Times(1).Return(int64(1), nil)
 				store.EXPECT().List(gomock.Any(), gomock.Eq(mockArgs.listRepoParams)).Times(1).Return(nil, sql.ErrConnDone)
 			},
 			checkResponse: func(t *testing.T, res *domain.AffiliatedDealerList, err error) {

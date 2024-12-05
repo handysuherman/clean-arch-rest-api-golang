@@ -1,5 +1,7 @@
 package domain
 
+import "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
+
 type AffiliatedDealer struct {
 	ID                   int64   `json:"id"`
 	AffiliatedDealerName string  `json:"affiliated_dealer_name"`
@@ -30,7 +32,6 @@ type UpdateAffiliatedDealerDTORequestParams struct {
 }
 
 type FetchDTORequestParams struct {
-	Query *string `json:"query"`
-	Page  *int    `json:"page"`
-	Size  *int    `json:"size"`
+	Query      *string            `json:"query"`
+	Pagination *helper.Pagination `json:"pagination"`
 }
