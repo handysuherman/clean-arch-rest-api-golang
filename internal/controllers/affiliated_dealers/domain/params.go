@@ -8,6 +8,7 @@ type CreateRequestParams struct {
 
 type UpdateRequestParams struct {
 	AffiliatedDealerName *string `json:"affiliated_dealer_name,omitempty"`
+	IsActivated          *bool   `json:"is_activated"`
 }
 
 type FetchParams struct {
