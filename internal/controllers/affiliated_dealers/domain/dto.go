@@ -1,5 +1,7 @@
 package domain
 
+import "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
+
 type AffiliatedDealer struct {
 	ID                   int64   `json:"id"`
 	AffiliatedDealerName string  `json:"affiliated_dealer_name"`
@@ -20,16 +22,16 @@ type AffiliatedDealerList struct {
 	List        []*AffiliatedDealer `json:"list"`
 }
 
-type CreateDTORequestParams struct {
+type CreateAffiliatedDealerDTORequestParams struct {
 	AffiliatedDealerName string `json:"affiliated_dealer_name" validate:"required,gte=0,lte=255"`
 }
 
-type UpdateDTORequestParams struct {
+type UpdateAffiliatedDealerDTORequestParams struct {
 	AffiliatedDealerName *string `json:"affiliated_dealer_name,omitempty"`
+	IsActivated          *bool   `json:"is_activated"`
 }
 
 type FetchDTORequestParams struct {
-	Query *string `json:"query"`
-	Page  *int    `json:"page"`
-	Size  *int    `json:"size"`
+	Query      *string            `json:"query"`
+	Pagination *helper.Pagination `json:"pagination"`
 }

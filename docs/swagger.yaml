@@ -1,5 +1,41 @@
 basePath: /api/v1/
 definitions:
+  domain.AffiliatedDealer:
+    properties:
+      affiliated_dealer_name:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_activated:
+        type: boolean
+      is_activated_at:
+        type: string
+      is_activated_updated_at:
+        type: string
+      updated_at:
+        type: string
+      updated_by:
+        type: string
+    type: object
+  domain.AffiliatedDealerList:
+    properties:
+      has_next_page:
+        type: boolean
+      list:
+        items:
+          $ref: '#/definitions/domain.AffiliatedDealer'
+        type: array
+      page:
+        type: integer
+      size:
+        type: integer
+      total_count:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
   domain.Consumer:
     properties:
       birth_date:
@@ -94,6 +130,15 @@ definitions:
       total_pages:
         type: integer
     type: object
+  domain.CreateAffiliatedDealerDTORequestParams:
+    properties:
+      affiliated_dealer_name:
+        maxLength: 255
+        minLength: 0
+        type: string
+    required:
+    - affiliated_dealer_name
+    type: object
   domain.CreateConsumerDTORequestParams:
     properties:
       birth_date:
@@ -137,6 +182,13 @@ definitions:
     required:
     - affiliated_dealer_id
     - consumer_id
+    type: object
+  domain.UpdateAffiliatedDealerDTORequestParams:
+    properties:
+      affiliated_dealer_name:
+        type: string
+      is_activated:
+        type: boolean
     type: object
   domain.UpdateConsumerDTORequestParams:
     properties:
@@ -202,6 +254,198 @@ info:
   title: Studi Kasus PT. XYZ Golang Developer
   version: 1.0.1
 paths:
+  /affiliated-dealers:
+    get:
+      consumes:
+      - application/json
+      description: find list of Affiliated Dealers with the provided request parameters
+      parameters:
+      - description: search q, determine either full_name or legal_name of the user
+        in: query
+        name: q
+        required: true
+        type: string
+      - description: search page_size, determine the size of page / limit
+        in: query
+        name: page_size
+        required: true
+        type: string
+      - description: search page_id, determine the number page / offset
+        in: query
+        name: page_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.AffiliatedDealerList'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: find list of Affiliated Dealers
+      tags:
+      - Affiliated-Dealers
+    post:
+      consumes:
+      - application/json
+      description: Create a new Affiliated Dealers with the provided request parameters
+      parameters:
+      - description: body
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateAffiliatedDealerDTORequestParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully created consumer
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/http.IDResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new Affiliated Dealers
+      tags:
+      - Affiliated-Dealers
+  /affiliated-dealers/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Find Affiliated Dealer by associated id
+      parameters:
+      - description: Any Associated id From your Source, this parameter is required
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.AffiliatedDealer'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Find Affiliated Dealer
+      tags:
+      - Affiliated-Dealers
+    put:
+      consumes:
+      - application/json
+      description: Update an existing Affiliated Dealer by the provided ID and request
+        parameters
+      parameters:
+      - description: ID of the affiliated dealer transaction to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Request body for updating the affiliated dealer
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateAffiliatedDealerDTORequestParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated affiliated dealer transaction
+          schema:
+            allOf:
+            - $ref: '#/definitions/http.SuccessResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/http.IDResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httpError.RestError'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing Affiliated Dealer by ID
+      tags:
+      - Affiliated-Dealers
   /consumer-transactions:
     get:
       consumes:
