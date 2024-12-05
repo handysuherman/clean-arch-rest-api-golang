@@ -22,7 +22,7 @@ func createRandom(t *testing.T) *ConsumerTransaction {
 	arg := &CreateParams{
 		ConsumerID:         consumerArg,
 		AffiliatedDealerID: affiliatedDealerArg,
-		ContractNumber:     helper.RandomString(32),
+		ContractNumber:     helper.RandomString(16),
 		AdminFeeAmount:     decimal.NewNullDecimal(decimal.NewFromInt(helper.RandomInt(1000000, 10000000))),
 		InstallmentAmount:  decimal.NewNullDecimal(decimal.NewFromInt(helper.RandomInt(1000000, 10000000))),
 		OtrAmount:          decimal.NewNullDecimal(decimal.NewFromInt(helper.RandomInt(1000000, 10000000))),
