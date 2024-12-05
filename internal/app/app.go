@@ -11,6 +11,7 @@ import (
 	"syscall"
 
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/go-playground/validator/v10"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/config"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/metrics"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/logger"
@@ -25,6 +26,7 @@ type app struct {
 	metrics           *metrics.Metrics
 	metricsServer     *echo.Echo
 	healthCheckServer *http.Server
+	validator         *validator.Validate
 
 	jaegerCloser io.Closer
 
@@ -36,9 +38,10 @@ type app struct {
 
 func New(log logger.Logger, cfg *config.Config) *app {
 	return &app{
-		log:    log.WithPrefix("APP"),
-		cfg:    cfg,
-		doneCh: make(chan struct{}),
+		log:       log.WithPrefix("APP"),
+		cfg:       cfg,
+		doneCh:    make(chan struct{}),
+		validator: validator.New(),
 		server: server.New(server.WithHostPorts(
 			fmt.Sprintf("%s:%d", "0.0.0.0", cfg.Services.Internal.Port),
 		)),

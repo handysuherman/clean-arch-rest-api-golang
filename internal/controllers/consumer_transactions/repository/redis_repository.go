@@ -9,6 +9,14 @@ import (
 )
 
 type RedisRepository interface {
+	PutIdempotencyCreate(ctx context.Context, key string, arg int64)
+	GetIdempotencyCreate(ctx context.Context, key string) (int64, error)
+	DelIdempotencyCreate(ctx context.Context, key string)
+
+	PutIdempotencyUpdate(ctx context.Context, key string, arg int64)
+	GetIdempotencyUpdate(ctx context.Context, key string) (int64, error)
+	DelIdempotencyUpdate(ctx context.Context, key string)
+
 	Put(ctx context.Context, key string, arg *ConsumerTransaction)
 	Get(ctx context.Context, key string) (*ConsumerTransaction, error)
 	Del(ctx context.Context, key string)

@@ -8,7 +8,6 @@ type CreateRequestParams struct {
 	InstallmentAmount  *string `json:"installment_amount"`
 	OtrAmount          *string `json:"otr_amount"`
 	InterestRate       *string `json:"interest_rate"`
-	TransactionDate    string  `json:"transaction_date"`
 	AffiliatedDealerID int64   `json:"affiliated_dealer_id"`
 }
 
@@ -20,6 +19,6 @@ type UpdateRequestParams struct {
 }
 
 type FetchParams struct {
-	SearchText string             `json:"search_text"`
+	ConsumerID int64              `json:"consumer_id"`
 	Pagination *helper.Pagination `json:"pagination"`
 }

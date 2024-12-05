@@ -19,6 +19,15 @@ create-migration-file:
 sqlc:
 	sqlc generate
 
+.PHONY: mock
+mock:
+# mock consumer transactions repository
+	mockgen -package mock -destination internal/controllers/consumer_transactions/repository/mock/mock.go -source=internal/controllers/consumer_transactions/repository/repository.go
+
+.PHONY: swagger
+swagger:
+	swag init -g ./cmd/main.go --output ./docs
+	
 .PHONY: migrateup
 migrateup:
 	migrate -path ${MIGRATION_PATH} -database "$(DB_URL)" -verbose up
