@@ -6,7 +6,7 @@ import (
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/helper"
 )
 
-func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateRequestParams {
+func NewCreateRequestParams(arg *domain.CreateConsumerDTORequestParams) *domain.CreateRequestParams {
 	return &domain.CreateRequestParams{
 		Nik:         arg.Nik,
 		FullName:    arg.FullName,
@@ -19,11 +19,9 @@ func NewCreateRequestParams(arg *domain.CreateDTORequestParams) *domain.CreateRe
 	}
 }
 
-func NewUpdateRequestParams(arg *domain.UpdateDTORequestParams) *domain.UpdateRequestParams {
+func NewUpdateRequestParams(arg *domain.UpdateConsumerDTORequestParams) *domain.UpdateRequestParams {
 	return &domain.UpdateRequestParams{
-		Nik:         arg.Nik,
 		FullName:    arg.FullName,
-		LegalName:   arg.LegalName,
 		BirthPlace:  arg.BirthPlace,
 		BirthDate:   arg.BirthDate,
 		Salary:      arg.Salary,
@@ -53,7 +51,7 @@ func ToDTO(arg *repository.Consumer) *domain.Consumer {
 	}
 
 	if arg.BirthDate.Valid {
-		dateStr := arg.BirthDate.Time.String()
+		dateStr := arg.BirthDate.Time.Format("2006-01-02")
 		res.BirthDate = &dateStr
 	}
 
@@ -87,29 +85,18 @@ func ListToDTO(args []*repository.Consumer) []*domain.Consumer {
 	return list
 }
 
-func NewFetchProductsParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
+func NewFetchParams(arg *domain.FetchDTORequestParams) *domain.FetchParams {
 	var (
-		defaultPage       = 1
-		defaultSize       = 10
-		defaultSearchText = ""
+		searchText = ""
 	)
 
-	if arg.Page == nil {
-		arg.Page = &defaultPage
+	if arg.Query != nil {
+		searchText = *arg.Query
 	}
 
-	if arg.Size == nil {
-		arg.Size = &defaultSize
-	}
-
-	if arg.Query == nil {
-		arg.Query = &defaultSearchText
-	}
-
-	pq := helper.NewPaginationQuery(*arg.Size, *arg.Page)
 	return &domain.FetchParams{
-		SearchText: *arg.Query,
-		Pagination: pq,
+		SearchText: searchText,
+		Pagination: arg.Pagination,
 	}
 }
 

@@ -87,6 +87,7 @@ const (
 	UID        = "uid"
 	NIK        = "nik"
 	Search     = "search"
+	Q          = "q"
 	PageSize   = "page_size"
 	PageID     = "page_id"
 

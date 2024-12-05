@@ -6,7 +6,7 @@ import (
 	affiliatedDealersUsecase "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/affiliated_dealers/usecases"
 
 	consumersHandler "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumers/delivery/http/v1"
-	// consumersRepo "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumers/repository"
+	consumersRepo "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumers/repository"
 	consumersUsecase "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumers/usecases"
 
 	consumerLoanLimitsHandler "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumer_loan_limits/delivery/http/v1"
@@ -27,9 +27,9 @@ func (a *app) affiliatedDealersHandlers() *affiliatedDealersHandler.Handler {
 }
 
 func (a *app) consumersHandlers() *consumersHandler.Handler {
-	// repo := consumersRepo.New(a.log, a.cfg)
-	usecase := consumersUsecase.New()
-	handler := consumersHandler.New(a.log, a.cfg, usecase, a.server, a.metrics)
+	repo := consumersRepo.NewStore(a.log, a.cfg, a.mysqlConnection, a.redisConnection)
+	usecase := consumersUsecase.New(a.log, a.cfg, repo)
+	handler := consumersHandler.New(a.log, a.cfg, usecase, a.server, a.metrics, a.validator)
 
 	return handler
 }

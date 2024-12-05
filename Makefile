@@ -22,6 +22,7 @@ sqlc:
 .PHONY: mock
 mock:
 # mock consumer transactions repository
+	mockgen -package mock -destination internal/controllers/consumers/repository/mock/mock.go -source=internal/controllers/consumers/repository/repository.go
 	mockgen -package mock -destination internal/controllers/consumer_transactions/repository/mock/mock.go -source=internal/controllers/consumer_transactions/repository/repository.go
 
 .PHONY: swagger
