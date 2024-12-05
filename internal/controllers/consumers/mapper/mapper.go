@@ -51,7 +51,7 @@ func ToDTO(arg *repository.Consumer) *domain.Consumer {
 	}
 
 	if arg.BirthDate.Valid {
-		dateStr := arg.BirthDate.Time.String()
+		dateStr := arg.BirthDate.Time.Format("2006-01-02")
 		res.BirthDate = &dateStr
 	}
 

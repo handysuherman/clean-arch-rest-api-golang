@@ -3,6 +3,7 @@ package usecases
 import (
 	"context"
 	"database/sql"
+	"strconv"
 	"time"
 
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/controllers/consumers/domain"
@@ -81,6 +82,13 @@ func (u *usecaseImpl) Create(ctx context.Context, arg *domain.CreateRequestParam
 	if err != nil {
 		return 0, u.errorResponse(span, "response.LastInsertId.err", err)
 	}
+
+	updated_res, err := u.repository.FindByID(ctx, resultId)
+	if err != nil {
+		return 0, u.errorResponse(span, "u.repository.FindByID", err)
+	}
+
+	u.repository.Put(ctx, strconv.FormatInt(updated_res.ID, 10), updated_res)
 
 	return resultId, nil
 }

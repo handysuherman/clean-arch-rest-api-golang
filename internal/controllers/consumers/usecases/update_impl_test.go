@@ -60,7 +60,7 @@ func Test_MOCK_UPDATE(t *testing.T) {
 			body:  mockArgs.updateParams,
 			stubs: func(store *mock.MockRepository) {
 				store.EXPECT().Update(gomock.Any(), EqUpdateParamsMatcher(mockArgs.updateRepoParams)).Times(1).Return(nil)
-				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.updateRepoParams.ID)).Times(1).Return(sql.ErrNoRows)
+				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.updateRepoParams.ID)).Times(1).Return(nil, sql.ErrNoRows)
 				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.updateRepoParams.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
 			},
 			checkResponse: func(t *testing.T, res int64, err error) {
@@ -74,7 +74,7 @@ func Test_MOCK_UPDATE(t *testing.T) {
 			body:  mockArgs.updateParams,
 			stubs: func(store *mock.MockRepository) {
 				store.EXPECT().Update(gomock.Any(), EqUpdateParamsMatcher(mockArgs.updateRepoParams)).Times(1).Return(nil)
-				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.updateRepoParams.ID)).Times(1).Return(sql.ErrConnDone)
+				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.updateRepoParams.ID)).Times(1).Return(nil, sql.ErrConnDone)
 				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.updateRepoParams.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
 			},
 			checkResponse: func(t *testing.T, res int64, err error) {

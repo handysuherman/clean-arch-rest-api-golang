@@ -29,7 +29,8 @@ func Test_MOCK_CREATE(t *testing.T) {
 			tname: "OK",
 			body:  mockArgs.createParams,
 			stubs: func(store *mock.MockRepository) {
-				store.EXPECT().Create(gomock.Any(), EqCreateParamsMatcher(mockArgs.createRepoParams)).Times(1).Return(newMockSqlResult(), nil)
+				store.EXPECT().Create(gomock.Any(), EqCreateParamsMatcher(mockArgs.createRepoParams)).Times(1).Return(newMockSqlResult(&mockArgs.repoResponse.ID), nil)
+				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.repoResponse.ID)).Times(1).Return(mockArgs.repoResponse, nil)
 				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(1)
 			},
 			checkResponse: func(t *testing.T, res int64, err error) {
@@ -38,15 +39,42 @@ func Test_MOCK_CREATE(t *testing.T) {
 			},
 		},
 		{
-			tname: "ERR_INTERNAL_SERVER_ERROR",
+			tname: "ERR_CREATE_INTERNAL_SERVER_ERROR",
 			body:  mockArgs.createParams,
 			stubs: func(store *mock.MockRepository) {
 				store.EXPECT().Create(gomock.Any(), EqCreateParamsMatcher(mockArgs.createRepoParams)).Times(1).Return(nil, sql.ErrConnDone)
+				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.repoResponse.ID)).Times(0)
 				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
 			},
 			checkResponse: func(t *testing.T, res int64, err error) {
-				require.NoError(t, err)
-				require.NotEmpty(t, res)
+				require.Error(t, err)
+				require.Empty(t, res)
+			},
+		},
+		{
+			tname: "ERR_FIND_BY_ID_NOT_FOUND",
+			body:  mockArgs.createParams,
+			stubs: func(store *mock.MockRepository) {
+				store.EXPECT().Create(gomock.Any(), EqCreateParamsMatcher(mockArgs.createRepoParams)).Times(1).Return(newMockSqlResult(&mockArgs.repoResponse.ID), nil)
+				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.repoResponse.ID)).Times(1).Return(nil, sql.ErrNoRows)
+				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
+			},
+			checkResponse: func(t *testing.T, res int64, err error) {
+				require.Error(t, err)
+				require.Empty(t, res)
+			},
+		},
+		{
+			tname: "ERR_FIND_BY_ID_INTERNAL_SERVER_ERROR",
+			body:  mockArgs.createParams,
+			stubs: func(store *mock.MockRepository) {
+				store.EXPECT().Create(gomock.Any(), EqCreateParamsMatcher(mockArgs.createRepoParams)).Times(1).Return(newMockSqlResult(&mockArgs.repoResponse.ID), nil)
+				store.EXPECT().FindByID(gomock.Any(), EqFindByIDMatcher(mockArgs.repoResponse.ID)).Times(1).Return(nil, sql.ErrConnDone)
+				store.EXPECT().Put(gomock.Any(), gomock.Eq(strconv.FormatInt(mockArgs.repoResponse.ID, 10)), gomock.Eq(mockArgs.repoResponse)).Times(0)
+			},
+			checkResponse: func(t *testing.T, res int64, err error) {
+				require.Error(t, err)
+				require.Empty(t, res)
 			},
 		},
 	}

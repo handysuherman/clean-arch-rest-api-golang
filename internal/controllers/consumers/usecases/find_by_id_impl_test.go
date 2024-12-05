@@ -38,25 +38,24 @@ func Test_MOCK_FIND_BY_ID(t *testing.T) {
 				require.Equal(t, mockArgs.repoResponse.FullName, res.FullName)
 				require.Equal(t, mockArgs.repoResponse.CreatedAt, res.CreatedAt)
 				require.Equal(t, mockArgs.repoResponse.UpdatedAt, res.UpdatedAt)
-				require.Equal(t, mockArgs.repoResponse.UpdatedBy, res.UpdatedBy)
 				require.Equal(t, mockArgs.repoResponse.IsActivated, res.IsActivated)
 				require.Equal(t, mockArgs.repoResponse.IsActivatedAt, res.IsActivatedAt)
 				require.Equal(t, mockArgs.repoResponse.IsActivatedUpdatedAt, res.IsActivatedUpdatedAt)
 
 				if mockArgs.repoResponse.LegalName.Valid {
-					require.Equal(t, mockArgs.repoResponse.LegalName, *res.LegalName)
+					require.Equal(t, mockArgs.repoResponse.LegalName.String, *res.LegalName)
 				} else {
 					require.Nil(t, res.LegalName)
 				}
 
 				if mockArgs.repoResponse.BirthPlace.Valid {
-					require.Equal(t, mockArgs.repoResponse.BirthPlace, *res.BirthPlace)
+					require.Equal(t, mockArgs.repoResponse.BirthPlace.String, *res.BirthPlace)
 				} else {
 					require.Nil(t, res.BirthPlace)
 				}
 
 				if mockArgs.repoResponse.BirthDate.Valid {
-					require.Equal(t, mockArgs.repoResponse.BirthDate.Time.String(), *res.BirthDate)
+					require.Equal(t, mockArgs.repoResponse.BirthDate.Time.Format("2006-01-02"), *res.BirthDate)
 				} else {
 					require.Nil(t, res.BirthDate)
 				}
@@ -68,15 +67,21 @@ func Test_MOCK_FIND_BY_ID(t *testing.T) {
 				}
 
 				if mockArgs.repoResponse.KtpPhoto.Valid {
-					require.Equal(t, mockArgs.repoResponse.KtpPhoto, *res.KtpPhoto)
+					require.Equal(t, mockArgs.repoResponse.KtpPhoto.String, *res.KtpPhoto)
 				} else {
 					require.Nil(t, res.KtpPhoto)
 				}
 
 				if mockArgs.repoResponse.SelfiePhoto.Valid {
-					require.Equal(t, mockArgs.repoResponse.SelfiePhoto, *res.SelfiePhoto)
+					require.Equal(t, mockArgs.repoResponse.SelfiePhoto.String, *res.SelfiePhoto)
 				} else {
 					require.Nil(t, res.SelfiePhoto)
+				}
+
+				if mockArgs.repoResponse.UpdatedBy.Valid {
+					require.Equal(t, mockArgs.repoResponse.UpdatedBy.String, *res.UpdatedBy)
+				} else {
+					require.Nil(t, res.UpdatedBy)
 				}
 			},
 		},
@@ -97,25 +102,25 @@ func Test_MOCK_FIND_BY_ID(t *testing.T) {
 				require.Equal(t, mockArgs.repoResponse.FullName, res.FullName)
 				require.Equal(t, mockArgs.repoResponse.CreatedAt, res.CreatedAt)
 				require.Equal(t, mockArgs.repoResponse.UpdatedAt, res.UpdatedAt)
-				require.Equal(t, mockArgs.repoResponse.UpdatedBy, res.UpdatedBy)
+
 				require.Equal(t, mockArgs.repoResponse.IsActivated, res.IsActivated)
 				require.Equal(t, mockArgs.repoResponse.IsActivatedAt, res.IsActivatedAt)
 				require.Equal(t, mockArgs.repoResponse.IsActivatedUpdatedAt, res.IsActivatedUpdatedAt)
 
 				if mockArgs.repoResponse.LegalName.Valid {
-					require.Equal(t, mockArgs.repoResponse.LegalName, *res.LegalName)
+					require.Equal(t, mockArgs.repoResponse.LegalName.String, *res.LegalName)
 				} else {
 					require.Nil(t, res.LegalName)
 				}
 
 				if mockArgs.repoResponse.BirthPlace.Valid {
-					require.Equal(t, mockArgs.repoResponse.BirthPlace, *res.BirthPlace)
+					require.Equal(t, mockArgs.repoResponse.BirthPlace.String, *res.BirthPlace)
 				} else {
 					require.Nil(t, res.BirthPlace)
 				}
 
 				if mockArgs.repoResponse.BirthDate.Valid {
-					require.Equal(t, mockArgs.repoResponse.BirthDate.Time.String(), *res.BirthDate)
+					require.Equal(t, mockArgs.repoResponse.BirthDate.Time.Format("2006-01-02"), *res.BirthDate)
 				} else {
 					require.Nil(t, res.BirthDate)
 				}
@@ -127,15 +132,21 @@ func Test_MOCK_FIND_BY_ID(t *testing.T) {
 				}
 
 				if mockArgs.repoResponse.KtpPhoto.Valid {
-					require.Equal(t, mockArgs.repoResponse.KtpPhoto, *res.KtpPhoto)
+					require.Equal(t, mockArgs.repoResponse.KtpPhoto.String, *res.KtpPhoto)
 				} else {
 					require.Nil(t, res.KtpPhoto)
 				}
 
 				if mockArgs.repoResponse.SelfiePhoto.Valid {
-					require.Equal(t, mockArgs.repoResponse.SelfiePhoto, *res.SelfiePhoto)
+					require.Equal(t, mockArgs.repoResponse.SelfiePhoto.String, *res.SelfiePhoto)
 				} else {
 					require.Nil(t, res.SelfiePhoto)
+				}
+
+				if mockArgs.repoResponse.UpdatedBy.Valid {
+					require.Equal(t, mockArgs.repoResponse.UpdatedBy.String, *res.UpdatedBy)
+				} else {
+					require.Nil(t, res.UpdatedBy)
 				}
 			},
 		},

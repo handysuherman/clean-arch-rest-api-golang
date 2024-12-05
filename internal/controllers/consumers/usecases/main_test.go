@@ -128,7 +128,7 @@ func listParams(t *testing.T, repoResponse *repository.Consumer) *domain.FetchPa
 }
 
 func listRepoParams(t *testing.T, params *domain.FetchParams) (*repository.ListParams, *repository.CountListParams) {
-	searchText := "%" + params.SearchText + "%s"
+	searchText := "%" + params.SearchText + "%"
 
 	countListArg := &repository.CountListParams{
 		FullName: searchText,
@@ -148,7 +148,7 @@ func listRepoParams(t *testing.T, params *domain.FetchParams) (*repository.ListP
 
 func createParams(t *testing.T, repoResponse *repository.Consumer) *domain.CreateRequestParams {
 	salaryFloat, _ := repoResponse.Salary.Decimal.Float64()
-	birthDateStr := repoResponse.BirthDate.Time.String()
+	birthDateStr := repoResponse.BirthDate.Time.Format("2006-01-02")
 
 	return &domain.CreateRequestParams{
 		Nik:         repoResponse.Nik,
@@ -164,7 +164,7 @@ func createParams(t *testing.T, repoResponse *repository.Consumer) *domain.Creat
 
 func updateParams(t *testing.T, repoResponse *repository.Consumer) *domain.UpdateRequestParams {
 	salaryFloat, _ := repoResponse.Salary.Decimal.Float64()
-	birthDateStr := repoResponse.BirthDate.Time.String()
+	birthDateStr := repoResponse.BirthDate.Time.Format("2006-01-02")
 
 	return &domain.UpdateRequestParams{
 		FullName:    &repoResponse.FullName,
@@ -308,16 +308,26 @@ func findModuleRoot(dir string) string {
 	return ""
 }
 
-type mockSqlRes struct{}
+type mockSqlRes struct {
+	res *int64
+}
 
-func newMockSqlResult() sql.Result {
-	return &mockSqlRes{}
+func newMockSqlResult(res *int64) sql.Result {
+	return &mockSqlRes{
+		res: res,
+	}
 }
 
 func (m *mockSqlRes) LastInsertId() (int64, error) {
+	if m.res != nil {
+		return *m.res, nil
+	}
 	return helper.RandomInt(10, 1000000), nil
 }
 
 func (m *mockSqlRes) RowsAffected() (int64, error) {
+	if m.res != nil {
+		return *m.res, nil
+	}
 	return helper.RandomInt(10, 1000000), nil
 }
