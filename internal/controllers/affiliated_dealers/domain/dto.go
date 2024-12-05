@@ -26,6 +26,7 @@ type CreateAffiliatedDealerDTORequestParams struct {
 
 type UpdateAffiliatedDealerDTORequestParams struct {
 	AffiliatedDealerName *string `json:"affiliated_dealer_name,omitempty"`
+	IsActivated          *bool   `json:"is_activated"`
 }
 
 type FetchDTORequestParams struct {
