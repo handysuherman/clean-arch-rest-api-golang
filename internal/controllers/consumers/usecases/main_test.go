@@ -47,9 +47,9 @@ func TestMain(m *testing.M) {
 }
 
 type mockArgs struct {
-	createParams     *domain.CreateConsumerRequestParams
+	createParams     *domain.CreateRequestParams
 	createRepoParams *repository.CreateParams
-	updateParams     *domain.UpdateConsumerRequestParams
+	updateParams     *domain.UpdateRequestParams
 	updateRepoParams *repository.UpdateParams
 	listParams       *domain.FetchParams
 	listRepoParams   *repository.ListParams
@@ -139,10 +139,10 @@ func listRepoParams(t *testing.T, params *domain.FetchParams) *repository.ListPa
 	}
 }
 
-func createParams(t *testing.T, repoResponse *repository.Consumer) *domain.CreateConsumerRequestParams {
+func createParams(t *testing.T, repoResponse *repository.Consumer) *domain.CreateRequestParams {
 	salaryFloat, _ := repoResponse.Salary.Decimal.Float64()
 
-	return &domain.CreateConsumerRequestParams{
+	return &domain.CreateRequestParams{
 		Nik:         repoResponse.Nik,
 		FullName:    repoResponse.FullName,
 		LegalName:   repoResponse.LegalName.String,
@@ -154,11 +154,11 @@ func createParams(t *testing.T, repoResponse *repository.Consumer) *domain.Creat
 	}
 }
 
-func updateParams(t *testing.T, repoResponse *repository.Consumer) *domain.UpdateConsumerRequestParams {
+func updateParams(t *testing.T, repoResponse *repository.Consumer) *domain.UpdateRequestParams {
 	salaryFloat, _ := repoResponse.Salary.Decimal.Float64()
 	birthDateStr := repoResponse.BirthDate.Time.String()
 
-	return &domain.UpdateConsumerRequestParams{
+	return &domain.UpdateRequestParams{
 		FullName:    &repoResponse.FullName,
 		Salary:      &salaryFloat,
 		BirthPlace:  &repoResponse.BirthPlace.String,
@@ -298,4 +298,18 @@ func findModuleRoot(dir string) string {
 	}
 
 	return ""
+}
+
+type mockSqlRes struct{}
+
+func newMockSqlResult() sql.Result {
+	return &mockSqlRes{}
+}
+
+func (m *mockSqlRes) LastInsertId() (int64, error) {
+	return helper.RandomInt(10, 1000000), nil
+}
+
+func (m *mockSqlRes) RowsAffected() (int64, error) {
+	return helper.RandomInt(10, 1000000), nil
 }

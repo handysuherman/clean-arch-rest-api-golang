@@ -5,8 +5,8 @@ import (
 )
 
 type Usecase interface {
-	Create(ctx context.Context, arg *CreateConsumerRequestParams) (int, error)
-	Update(ctx context.Context, id int, arg *UpdateConsumerRequestParams) error
-	FindByID(ctx context.Context, id int) (*Consumer, error)
+	Create(ctx context.Context, arg *CreateRequestParams) (int64, error)
+	Update(ctx context.Context, id int64, arg *UpdateRequestParams) error
+	FindByID(ctx context.Context, id int64) (*Consumer, error)
 	List(ctx context.Context, arg *FetchParams) (*ConsumerList, error)
 }
