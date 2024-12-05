@@ -50,6 +50,8 @@ type mockArgs struct {
 	createRepoParams *repository.CreateParams
 	updateParams     *domain.UpdateRequestParams
 	updateRepoParams *repository.UpdateParams
+	listParams       *domain.FetchParams
+	listRepoParams   *repository.ListParams
 
 	idempotencyKey string
 
@@ -100,6 +102,9 @@ func createRandom(t *testing.T) *mockArgs {
 	updateParams := updateParams(t, repoResponse)
 	updateRepoParams := updateRepositoryParams(t, repoResponse)
 
+	listParams := listParams(t, repoResponse)
+	listRepoParams := listRepoParams(t, listParams)
+
 	return &mockArgs{
 		createParams:     createParams,
 		idempotencyKey:   helper.RandomString(32),
@@ -107,6 +112,23 @@ func createRandom(t *testing.T) *mockArgs {
 		repoResponse:     repoResponse,
 		updateParams:     updateParams,
 		updateRepoParams: updateRepoParams,
+		listParams:       listParams,
+		listRepoParams:   listRepoParams,
+	}
+}
+
+func listParams(t *testing.T, repoResponse *repository.ConsumerTransaction) *domain.FetchParams {
+	return &domain.FetchParams{
+		ConsumerID: repoResponse.ConsumerID,
+		Pagination: helper.NewPaginationFromQueryParams("1", "1"),
+	}
+}
+
+func listRepoParams(t *testing.T, params *domain.FetchParams) *repository.ListParams {
+	return &repository.ListParams{
+		ConsumerID: params.ConsumerID,
+		Limit:      int32(params.Pagination.GetLimit()),
+		Offset:     int32(params.Pagination.GetOffset()),
 	}
 }
 

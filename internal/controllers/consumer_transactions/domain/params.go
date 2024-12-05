@@ -19,6 +19,6 @@ type UpdateRequestParams struct {
 }
 
 type FetchParams struct {
-	SearchText string             `json:"search_text"`
+	ConsumerID int64              `json:"consumer_id"`
 	Pagination *helper.Pagination `json:"pagination"`
 }
