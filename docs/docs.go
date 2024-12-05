@@ -332,6 +332,319 @@ const docTemplate = `{
                 }
             }
         },
+        "/consumer-loan-limits": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "find list of Consumer Loan Limits with the provided request parameters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Consumer-Loan-Limits"
+                ],
+                "summary": "find list of Consumer Loan Limits",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "customer_id, determine the customer id",
+                        "name": "customer_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "search page_size, determine the size of page / limit",
+                        "name": "page_size",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "search page_id, determine the number page / offset",
+                        "name": "page_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/http.SuccessResponseDto"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/domain.ConsumerLoanLimitList"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create a new consumer Loan Limits with the provided request parameters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Consumer-Loan-Limits"
+                ],
+                "summary": "Create a new Consumer Loan Limits",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CreateConsumerLoanLimitDTORequestParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully created consumer",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/http.SuccessResponseDto"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/http.IDResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    }
+                }
+            }
+        },
+        "/consumer-loan-limits/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Find Consumer Loan Limit by associated id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Consumer-Loan-Limits"
+                ],
+                "summary": "Find Consumer Loan Limit",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Any Associated id From your Source, this parameter is required",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/http.SuccessResponseDto"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/domain.ConsumerLoanLimit"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update an existing Consumer Loan Limit by the provided ID and request parameters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Consumer-Loan-Limits"
+                ],
+                "summary": "Update an existing Consumer Loan Limit by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID of the consumer transaction to update",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Request body for updating the consumer",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.UpdateConsumerLoanLimitDTORequestParams"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated consumer transaction",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/http.SuccessResponseDto"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/http.IDResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/httpError.RestError"
+                        }
+                    }
+                }
+            }
+        },
         "/consumer-transactions": {
             "get": {
                 "security": [
@@ -1103,6 +1416,60 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.ConsumerLoanLimit": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
+                "consumer_id": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "description": "format should be like 0001-01-01 00:00:00Z",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "tenor": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "description": "format should be like 0001-01-01 00:00:00Z",
+                    "type": "string"
+                },
+                "updated_by": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ConsumerLoanLimitList": {
+            "type": "object",
+            "properties": {
+                "has_next_page": {
+                    "type": "boolean"
+                },
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.ConsumerLoanLimit"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "total_count": {
+                    "type": "integer"
+                },
+                "total_pages": {
+                    "type": "integer"
+                }
+            }
+        },
         "domain.ConsumerTransaction": {
             "type": "object",
             "properties": {
@@ -1220,6 +1587,25 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.CreateConsumerLoanLimitDTORequestParams": {
+            "type": "object",
+            "required": [
+                "amount",
+                "consumer_id",
+                "tenor"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
+                "consumer_id": {
+                    "type": "integer"
+                },
+                "tenor": {
+                    "type": "integer"
+                }
+            }
+        },
         "domain.CreateConsumerTransactionDTORequestParams": {
             "type": "object",
             "required": [
@@ -1281,6 +1667,17 @@ const docTemplate = `{
                 },
                 "selfie_photo": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.UpdateConsumerLoanLimitDTORequestParams": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "string"
+                },
+                "tenor": {
+                    "type": "integer"
                 }
             }
         },
