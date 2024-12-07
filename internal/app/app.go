@@ -63,7 +63,7 @@ func (a *app) Run() error {
 	if err := a.runDBMigration(); err != nil {
 		return err
 	}
-	a.log.Info("Database Migration successfully migrated ...")
+	a.log.Info("database migration successfully migrated ...")
 
 	if err := a.redis(ctx); err != nil {
 		return err
