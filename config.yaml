@@ -20,7 +20,7 @@ databases:
     host: "constantinopel.xyz-multifinance-mysql.server"
     port: "3306"
     enable_tls: true
-    migration_url: "./configs/migrations"
+    migration_url: "file://configs/migration"
   redis:
     servers:
       - "constantinopel.xyz-multifinance-redis.server:6379"

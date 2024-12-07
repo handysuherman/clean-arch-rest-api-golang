@@ -60,6 +60,11 @@ func (a *app) Run() error {
 	a.log.Infof("connection to database successfully established...")
 	defer a.mysqlConnection.Close()
 
+	if err := a.runDBMigration(); err != nil {
+		return err
+	}
+	a.log.Info("database migration successfully migrated ...")
+
 	if err := a.redis(ctx); err != nil {
 		return err
 	}

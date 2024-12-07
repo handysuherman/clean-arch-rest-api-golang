@@ -41,7 +41,7 @@ migratedown:
 
 .PHONY: server
 server:
-	go run ./cmd/main.go --config-file=. --env=production
+	go run ./cmd/main.go --config-file=./config.yaml --env=production
 
 .PHONY: dev-server-clean
 dev-server-clean:
