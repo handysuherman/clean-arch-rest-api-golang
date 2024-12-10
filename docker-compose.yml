@@ -19,8 +19,8 @@ services:
       - "6379:6379"
     volumes:
       - ./tls/redis:/tls/ssl
-      - ./deployment-scripts/redis/tls/redis-entrypoint.sh:/app/docker-entrypoint.sh
-      - ./deployment-scripts/redis/tls/redis-healthcheck.sh:/app/docker-healthcheck.sh
+      - ./configs/deployment-scripts/redis/tls/redis-entrypoint.sh:/app/docker-entrypoint.sh
+      - ./configs/deployment-scripts/redis/tls/redis-healthcheck.sh:/app/docker-healthcheck.sh
     healthcheck:
       test: ["CMD", /app/docker-healthcheck.sh]
       interval: 10s
