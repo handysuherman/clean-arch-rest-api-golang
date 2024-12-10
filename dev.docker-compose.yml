@@ -17,7 +17,7 @@ services:
       - "6379:6379"
     volumes:
       - ./tls/redis:/tls/ssl
-      - ./deployment-scripts/redis/redis-entrypoint.sh:/app/docker-entrypoint.sh
+      - ./configs/deployment-scripts/redis/redis-entrypoint.sh:/app/docker-entrypoint.sh
   
   # monitoring
   prometheus:

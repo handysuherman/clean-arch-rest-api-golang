@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	_ "github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/docs" //nolint
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/app"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/config"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/logger"

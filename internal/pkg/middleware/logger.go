@@ -22,7 +22,7 @@ func (mw *middlewareManager) RequestLoggerMiddleware() app.HandlerFunc {
 
 func (mw *middlewareManager) CORSMiddleware() app.HandlerFunc {
 	return func(c context.Context, ctx *app.RequestContext) {
-		ctx.Header("Access-Control-Allow-Origin", "*")
+		ctx.Header("Access-Control-Allow-Origin", "http://0.0.0.0:50050")
 		ctx.Header("Access-Control-Allow-Credentials", "true")
 		ctx.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, x-api-key, _needsrefresh")
 		ctx.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")

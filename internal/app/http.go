@@ -8,7 +8,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 	"github.com/handysuherman/studi-kasus-pt-xyz-golang-developer/internal/pkg/middleware"
-	"github.com/hertz-contrib/cors"
 	"github.com/hertz-contrib/swagger"
 	swaggerFiles "github.com/swaggo/files"
 )
@@ -19,21 +18,10 @@ func (a *app) runHTTPServer(ctx context.Context, cancel context.CancelFunc) erro
 	a.server = server.New(server.WithHostPorts(addr))
 
 	mw := middleware.NewMiddlewareManager(a.log)
-
+	// config := cors.DefaultConfig()
+	// config.AllowAllOrigins = true
 	a.server.Use(mw.RequestLoggerMiddleware())
-	a.server.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:50050"},
-		AllowHeaders:     []string{"Origin, Content-Type, Accept"},
-		AllowCredentials: true,
-		AllowMethods: []string{
-			consts.MethodGet,
-			consts.MethodPatch,
-			consts.MethodPost,
-			consts.MethodDelete,
-			consts.MethodHead,
-			consts.MethodOptions,
-		},
-	}))
+	a.server.Use(mw.CORSMiddleware())
 
 	if a.cfg.Services.Internal.Environment != "production" {
 		url := swagger.URL(fmt.Sprintf("%s:%d/swagger/doc.json", "0.0.0.0", a.cfg.Services.Internal.Port))
